@@ -115,7 +115,7 @@ export default function HomePage() {
                   tamanho={pet.tamanho}
                   personalidade={pet.personalidade}
                   imagem={pet.foto}
-                  onAdopt={() => handleAdopt(pet.id)}
+                  onAdopt={() => handleAdopt}
                 />
               ))}
             </div>

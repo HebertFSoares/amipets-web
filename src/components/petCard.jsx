@@ -11,6 +11,7 @@ export default function PetCard({
   tamanho,
   personalidade,
   imagem,
+  onAdopt,
 }) {
   return (
     <div>
@@ -36,14 +37,17 @@ export default function PetCard({
         </CardContent>
         <CardFooter className="flex flex-col">
           <div className="flex gap-3 w-full">
-            <Button className="bg-primary-400 text-white hover:bg-primary-300">
-              <Link to={`/pets/${id}`}>Adotar</Link>
+            <Button
+              className="bg-primary-400 text-white hover:bg-primary-300"
+              onClick={() => onAdopt(id)}
+            >
+              Adotar
             </Button>
-            {/*
+            {/* 
             <Button className="bg-primary-400 text-white text-sm py-1 rounded hover:bg-primary-300 w-[25%]">
               <Star size={24} />
             </Button>
-              */}
+            */}
           </div>
 
           <Link
