@@ -36,12 +36,9 @@ export default function PetCard({
         </CardContent>
         <CardFooter className="flex flex-col">
           <div className="flex gap-3 w-full">
-            <Link
-              className=" inline-flex h-10 px-4 py-2 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary-400 text-white hover:bg-primary-300 w-full"
-              to={`/pets/${id}`}
-            >
-              Adotar
-            </Link>
+            <Button className="bg-primary-400 text-white hover:bg-primary-300">
+              <Link to={`/pets/${id}`}>Adotar</Link>
+            </Button>
             {/*
             <Button className="bg-primary-400 text-white text-sm py-1 rounded hover:bg-primary-300 w-[25%]">
               <Star size={24} />
