@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -37,14 +38,25 @@ export default function Cadastro() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <div className="flex-grow flex items-center justify-center">
-        <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Cadastrar-se</h2>
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-grow flex items-center justify-center gap-16">
+        <div className="w-[244px] h-[790px] rounded-lg bg-primary-400" />
+
+        <div className=" max-w-lg bg-white p-8 rounded-lg border border-primary-400 shadow-lg w-[420px]">
+          <div className="flex flex-col gap-3 mb-6">
+            <h2 className="text-3xl font-bold text-gray-800 ">Cadastrar-se</h2>
+            <p>
+              Com uma conta, você poderá adotar um pet e transformar a vida dele
+              para melhor!
+            </p>
+          </div>
 
           <form onSubmit={handleCadastro}>
             <div className="mb-6">
-              <label htmlFor="nome" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="nome"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Nome
               </label>
               <input
@@ -59,7 +71,10 @@ export default function Cadastro() {
             </div>
 
             <div className="mb-6">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 E-mail
               </label>
               <input
@@ -74,7 +89,10 @@ export default function Cadastro() {
             </div>
 
             <div className="mb-6">
-              <label htmlFor="telefone" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="telefone"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Telefone
               </label>
               <input
@@ -89,7 +107,10 @@ export default function Cadastro() {
             </div>
 
             <div className="mb-6">
-              <label htmlFor="endereco" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="endereco"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Endereço
               </label>
               <input
@@ -104,7 +125,10 @@ export default function Cadastro() {
             </div>
 
             <div className="mb-6">
-              <label htmlFor="senha" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="senha"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Senha
               </label>
               <input
@@ -118,7 +142,9 @@ export default function Cadastro() {
               />
             </div>
 
-            {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+            {error && (
+              <p className="text-red-500 text-sm text-center mb-4">{error}</p>
+            )}
 
             <div className="mb-6">
               <button
@@ -131,12 +157,13 @@ export default function Cadastro() {
             </div>
 
             <div className="flex justify-between items-center mb-6">
-              <a href="#" className="text-sm text-[#7DA632] hover:underline">
+              <Link to={'/login'} className="text-sm text-[#7DA632] hover:underline">
                 Já tem uma conta? Entre aqui!
-              </a>
+              </Link>
             </div>
           </form>
         </div>
+        <div className="w-[244px] h-[790px] rounded-lg bg-primary-400" />
       </div>
     </div>
   );
