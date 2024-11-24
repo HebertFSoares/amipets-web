@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import PetCard from "@/components/petCard";
-import axios from 'axios';
+import { api } from "@/lib/apiWrapper";
 
 export default function PetGallery() {
   const [pets, setPets] = useState([]);
@@ -16,7 +16,7 @@ export default function PetGallery() {
         return;
       }
 
-      const response = await axios.get("http://localhost:3000/api/pets", {
+      const response = await api.get("pets", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

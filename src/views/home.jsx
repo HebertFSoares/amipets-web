@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/apiWrapper";
 import PetCard from "@/components/petCard";
 import { Button } from "@/components/ui/button";
 import { Mail, PhoneCall } from "lucide-react";
@@ -14,7 +14,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/pets");
+        const response = await api.get("pets");
         setPets(response.data);
         setError(null);
       } catch (err) {
@@ -43,9 +43,9 @@ export default function HomePage() {
       return;
     }
 
-    axios
+    api
       .post(
-        `http://localhost:3000/api/pets/${petId}/adopt`,
+        `pets/${petId}/adopt`,
         {},
         {
           headers: {
