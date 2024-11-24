@@ -21,6 +21,7 @@ export default function Login() {
 
       if (response.status === 200) {
         console.log("Login bem-sucedido", response.data);
+        localStorage.setItem("authToken", response.data.token);
       }
     } catch (err) {
       setError("Erro ao fazer login. Verifique suas credenciais.");
