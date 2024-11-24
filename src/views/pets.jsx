@@ -1,88 +1,60 @@
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import PetCard from "@/components/petCard";
+import axios from 'axios';
 
 export default function PetGallery() {
-  const pets = [
-    {
-      id: 1,
-      nome: "Magato Whiskas",
-      especie: "Gato",
-      dataNasc: "2023-01-15",
-      tamanho: "Médio",
-      personalidade: "Brincalhão",
-      imagem:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTGljO8Ivuniqps963BET_W2CW2cRUWab6sw&s",
-    },
-    {
-      id: 2,
-      nome: "Garuto Uzu Matu",
-      especie: "Gato",
-      dataNasc: "2022-06-10",
-      tamanho: "Pequeno",
-      personalidade: "Calma",
-      imagem:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWjsaOpJx4BA8xqdSFk0DqLbJYnxrn7ogmiw&s",
-    },
-    {
-      id: 3,
-      nome: "Itachi Whiskas",
-      especie: "Gato",
-      dataNasc: "2023-03-22",
-      tamanho: "Pequeno",
-      personalidade: "Independente",
-      imagem:
-        "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lrpc2a9inlt0a1",
-    },
-    {
-      id: 4,
-      nome: "Maria Cheira Pum",
-      especie: "Cachorra",
-      dataNasc: "2021-11-15",
-      tamanho: "Grande",
-      personalidade: "Amorosa",
-      imagem:
-        "https://cdn0.peritoanimal.com.br/pt/posts/3/7/2/nomes_para_cadelas_pinscher_22273_orig.jpg",
-    },
-    {
-      id: 5,
-      nome: "Zé Corote",
-      especie: "Cachorro",
-      dataNasc: "2022-09-10",
-      tamanho: "Médio",
-      personalidade: "Bagunceiro",
-      imagem: "https://i.imgur.com/wtqP8h7.png",
-    },
-    {
-      id: 6,
-      nome: "Coronel Te Cheiro o Peido",
-      especie: "Cachorro",
-      dataNasc: "2020-08-05",
-      tamanho: "Grande",
-      personalidade: "Protetor",
-      imagem:
-        "https://aquinoticias.com/wp-content/uploads/2024/07/Snapinsta.app_379413281_18013838515873221_6581482338551642786_n_1080-946x1024.jpg.webp",
-    },
-    {
-      id: 7,
-      nome: "Zé Pelanca",
-      especie: "Cachorro",
-      dataNasc: "2019-06-15",
-      tamanho: "Grande",
-      personalidade: "Fiel",
-      imagem:
-        "https://preview.redd.it/ko6g84zhi8b41.jpg?auto=webp&s=4b0b531285413833eb148a2fbf5b9f7070ba33a0",
-    },
-    {
-      id: 8,
-      nome: "Negão Quebra Coco",
-      especie: "Cachorro",
-      dataNasc: "2018-12-25",
-      tamanho: "Grande",
-      personalidade: "Carismático",
-      imagem:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6Xj_ZVzmrtsGvliAefthoXz7mTwsn_VaFLA&s",
-    },
-  ];
+  const [pets, setPets] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchPets = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        console.error("Token não encontrado no LocalStorage");
+        return;
+      }
+
+      const response = await axios.get("http://localhost:3000/api/pets", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Status da resposta:", response.status);
+      console.log("Headers da resposta:", response.headers);
+
+      const data = response.data;
+
+      if (Array.isArray(data)) {
+        const formattedData = data.map((pet) => ({
+          id: pet.id,
+          nome: pet.nome,
+          especie: pet.especie,
+          dataNasc: pet.dataNascimento
+            ? new Date(pet.dataNascimento).toLocaleDateString("pt-BR") 
+            : "N/A",
+          tamanho: pet.tamanho || "N/A",
+          personalidade: pet.personalidade?.join(", ") || "N/A",
+          imagem: pet.foto || "https://via.placeholder.com/150",
+        }));
+
+        setPets(formattedData);
+      } else {
+        console.error("Resposta inesperada da API:", data);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Erro ao buscar os pets:", error.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPets();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -117,18 +89,22 @@ export default function PetGallery() {
 
       <div className="container mx-auto mt-8 px-4">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-          {pets.map((pet) => (
-            <PetCard
-              key={pet.id}
-              id={pet.id}
-              nome={pet.nome}
-              especie={pet.especie}
-              dataNasc={pet.dataNasc}
-              tamanho={pet.tamanho}
-              personalidade={pet.personalidade}
-              imagem={pet.imagem}
-            />
-          ))}
+          {loading ? (
+            <p>Carregando...</p>
+          ) : (
+            pets.map((pet) => (
+              <PetCard
+                key={pet.id}
+                id={pet.id}
+                nome={pet.nome}
+                especie={pet.especie}
+                dataNasc={pet.dataNasc}
+                tamanho={pet.tamanho}
+                personalidade={pet.personalidade}
+                imagem={pet.imagem}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
