@@ -15,7 +15,7 @@ export default function Header() {
           <Link to="/pets">Pets</Link>
         </Button>
       </div>
-      <div className="flex gap-4 rounded-3xl">
+      <div>
         <Button className="bg-primary-400">
           <Link to="/login">Entrar</Link>
         </Button>

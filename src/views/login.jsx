@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { api } from "@/lib/apiWrapper";
+import { Link } from "react-router-dom";
+import { Button } from "../components/ui/button";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -9,7 +11,7 @@ export default function LoginPage() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    
+
     setLoading(true);
     setError("");
 
@@ -32,14 +34,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <div className="flex-grow flex items-center justify-center">
-        <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Entrar</h2>
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-grow flex items-center justify-center gap-16">
+        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400" />
+        <div className=" max-w-lg bg-white p-8 rounded-lg border border-primary-400 shadow-lg w-[420px]">
+          <div className="flex flex-col gap-2 mb-6 ">
+            <h2 className="text-3xl font-bold text-gray-800">Entrar</h2>
+            <p>Que bom receber você novamente!</p>
+          </div>
 
           <form onSubmit={handleLogin}>
             <div className="mb-6">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 E-mail
               </label>
               <input
@@ -54,7 +63,10 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-6">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Senha
               </label>
               <input
@@ -68,28 +80,31 @@ export default function LoginPage() {
               />
             </div>
 
-            {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+            {error && (
+              <p className="text-red-500 text-sm text-center mb-4">{error}</p>
+            )}
 
-            <div className="mb-6">
-              <button
+            <div className="flex flex-col mb-6 gap-2">
+              <Button
                 type="submit"
-                className="w-full bg-[#7DA632] text-white font-semibold py-3 px-4 rounded-md shadow-lg hover:bg-[#6b9132] transition duration-200"
+                className="w-full bg-primary-400 text-white font-semibold py-3 px-4 rounded-md shadow-lg hover:bg-primary-300 transition duration-200"
                 disabled={loading}
               >
                 {loading ? "Carregando..." : "Entrar"}
-              </button>
+              </Button>
+              <Button className="w-full bg-primary-700 text-gray-800 font-semibold py-3 px-4 rounded-md shadow-lg hover:bg-primary-500 transition duration-200">
+                <Link to={"/registrar"}>Crie uma conta</Link>
+              </Button>
             </div>
 
             <div className="flex justify-between items-center mb-6">
               <a href="#" className="text-sm text-[#7DA632] hover:underline">
                 Esqueci minha senha
               </a>
-              <a href="#" className="text-sm text-[#7DA632] hover:underline">
-                Ainda não é registrado? Clique aqui!
-              </a>
             </div>
           </form>
         </div>
+        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400" />
       </div>
     </div>
   );
