@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import PetCard from "@/components/petCard";
-import { api } from "@/lib/apiHandler";
+import { api } from "@/lib/apiWrapper";
 
 export default function PetGallery() {
   const [pets, setPets] = useState([]);

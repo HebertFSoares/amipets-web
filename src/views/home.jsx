@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "@/lib/apiHandler";
+import { api } from "@/lib/apiWrapper";
 import PetCard from "@/components/petCard";
 import { Button } from "@/components/ui/button";
 import { Mail, PhoneCall } from "lucide-react";

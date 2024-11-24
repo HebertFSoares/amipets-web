@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { api } from "@/lib/apiHandler";
+import { api } from "@/lib/apiWrapper";
 
 export default function SignUpPage() {
   const [nome, setNome] = useState("");

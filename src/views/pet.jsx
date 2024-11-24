@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { api } from "@/lib/apiHandler";
+import { api } from "@/lib/apiWrapper";
 
 export default function PetDetail() {
   const { id } = useParams();
