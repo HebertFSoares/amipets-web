@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/apiHandler";
 
-export default function OTP() {
+export default function OTPPage() {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,7 +13,7 @@ export default function OTP() {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:3000/api/verify-otp", {
+      const response = await api.post("verify-otp", {
         otp,
       });
 

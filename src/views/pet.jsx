@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
 import { useState, useEffect } from "react";
+import { api } from "@/lib/apiHandler";
 
 export default function PetDetail() {
   const { id } = useParams();
@@ -18,14 +18,14 @@ export default function PetDetail() {
 
     const fetchPetData = async () => {
       try {
-        const petResponse = await axios.get(`http://localhost:3000/api/pets/${id}`, {
+        const petResponse = await api.get(`pets/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         setPet(petResponse.data);
-        const otherPetsResponse = await axios.get('http://localhost:3000/api/pets', {
+        const otherPetsResponse = await api.get('pets', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/apiHandler";
 
-export default function Cadastro() {
+export default function SignUpPage() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -10,14 +10,14 @@ export default function Cadastro() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleCadastro = async (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
 
     setLoading(true);
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:3000/api/signup", {
+      const response = await api.post("signup", {
         nome,
         email,
         telefone,
@@ -42,7 +42,7 @@ export default function Cadastro() {
         <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Cadastrar-se</h2>
 
-          <form onSubmit={handleCadastro}>
+          <form onSubmit={handleSignUp}>
             <div className="mb-6">
               <label htmlFor="nome" className="block text-sm font-medium text-gray-700">
                 Nome
