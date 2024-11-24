@@ -1,6 +1,5 @@
-import Button from "@/components/ui";
+import { Button } from "@/components/ui/button";
 import PetCard from "@/components/petCard";
-
 
 export default function PetGallery() {
   const pets = [
