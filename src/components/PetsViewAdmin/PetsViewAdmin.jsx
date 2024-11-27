@@ -14,7 +14,7 @@ import { capitalize } from "@/utils/capitalize"
 import { useForm } from "react-hook-form"
 
 
-export function PetsTable() {
+export function PetsViewAdmin() {
 
     const { control, handleSubmit, register, setValue } = useForm({
         defaultValues: {
