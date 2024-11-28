@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { api } from "@/lib/apiWrapper";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
+import { useAuth } from "@/hooks/auth/AuthProvider";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
+  const user = useAuth();
   
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -27,8 +29,8 @@ export default function LoginPage() {
       if (response.status === 200) {
         console.log("Login bem-sucedido", response.data);
         setMessage("Login realizado com sucesso! Redirecionando...");
-        localStorage.setItem("authToken", response.data.token);
-        setTimeout(() => { navigate("/") }, 5000);
+        user.login(response.data)
+        setTimeout(() => { navigate("/") }, 3000);
       }
     } catch (err) {
       setError("Erro ao fazer login. Verifique suas credenciais.");
