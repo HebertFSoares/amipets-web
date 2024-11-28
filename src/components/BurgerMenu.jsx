@@ -11,8 +11,8 @@ export default function BurgerMenu() {
       links: [
         {linkTo: "/user/", label: "Minhas adoções"},
         {linkTo: "/user/", label: "Meus pets favoritos"},
-        {linkTo: "/user/", label: "Buscar pets"},
-        {linkTo: "/user/", label: "Editar perfil"}
+        {linkTo: "/pets", label: "Buscar pets"},
+        {linkTo: "/user/edit", label: "Editar perfil"}
       ]
     },
     {
@@ -50,7 +50,7 @@ export default function BurgerMenu() {
               }
             </div>
               {category.links.map((link, index) => (
-                <Link to={link.linkTo} className="text-text-900 underline hover:text-text-500" onClick={link.label === "Logout" ? user.logout : null }>{link.label}</Link>
+                <Link key={index} to={link.linkTo} className="text-text-900 underline hover:text-text-500" onClick={link.label === "Logout" ? user.logout : null }>{link.label}</Link>
               ))}
           </div>
         ))}

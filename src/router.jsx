@@ -9,6 +9,7 @@ import LoginPage from "./views/login";
 import SignUpPage from "./views/signUp";
 import OTPPage from "./views/otp";
 import PetDetail from "./views/pet";
+import UserEditarPage from "./views/user/editar";
 
 const PrivateRoute = () => {
     const user = useAuth();
@@ -33,6 +34,10 @@ export const router = createBrowserRouter(
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/registrar" element={<SignUpPage />} />
                 <Route path="/otp" element={<OTPPage />} />
+            </Route>
+
+            <Route element={<PrivateRoute/>}>
+                <Route path="user/edit" element={<UserEditarPage />} />
             </Route>
         </Route>
     )
