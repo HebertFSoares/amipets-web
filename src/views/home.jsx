@@ -63,17 +63,17 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <section className="py-12">
-        <div className="flex">
-          <div className="my-auto w-full">
-            <h2 className=" font-bold text-primary-200 mb-4 w-[75%] md:text-xl lg:text-4xl">
+      <section className="py-12 px-4 ">
+        <div className="flex flex-col-reverse md:flex-row md:items-center justify-center ">
+          <div className="text-center md:text-left md:w-1/2">
+            <h2 className="font-bold text-primary-200 mb-4 lg:text-4xl text-3xl   ">
               Seu novo melhor amigo está esperando por você
             </h2>
-            <p className="text-lg text-gray-600 mb-6 w-[85%] md:text-sm lg:text-lg">
+            <p className="text-base text-gray-600 mb-6 md:text-sm lg:text-lg">
               Na AmiPets, cada pet disponível para adoção está esperando por um
               lar cheio de amor. Venha conhecê-los e transforme a vida deles
               para melhor, enquanto faz parte de uma causa que acredita em lares
-              felizes e menos abandono
+              felizes e menos abandono.
             </p>
             <Button
               className="bg-primary-400 text-white px-6 py-3 rounded-lg shadow text-sm hover:bg-primary-300"
@@ -87,25 +87,24 @@ export default function HomePage() {
               Conheça nossos animais
             </Button>
           </div>
-          <img src="src\assets\images\pit.jpg" alt="" className="w-[40%] md:object-contain md:w-[55%] " />
+          <img
+            src="src/assets/images/pit.jpg"
+            alt="Imagem de um cão"
+            className="w-full md:w-1/2 md:object-contain lg:w-96 rounded-lg"
+          />
         </div>
       </section>
 
       <section className="bg-primary-600 py-12" id="Pets">
         <div className="container mx-auto px-4">
-          <h3 className="text-2xl font-bold text-white text-center mb-6">
+          <h3 className="text-4xl font-bold text-white text-center mb-6 lg:text-3xl">
             Nossas criaturinhas
           </h3>
 
-          {loading ? (
-            <div className="text-white text-center py-4">
-              Carregando pets...
-            </div>
-          ) : error ? (
-            <div className="text-red-500 text-center py-4">{error}</div>
-          ) : (
+
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
-              {displayedPets.map((pet) => (
+              {/*
+                              {displayedPets.map((pet) => (
                 <PetCard
                   key={pet.id}
                   id={pet.id}
@@ -118,8 +117,69 @@ export default function HomePage() {
                   onAdopt={() => handleAdopt}
                 />
               ))}
+                */}
+                <PetCard
+                  id={1}
+                  nome="Rex"
+                  especie="Cachorro"
+                  dataNasc="01/01/2019"
+                  tamanho="Grande"
+                  personalidade="Brincalhão"
+                  imagem="src/assets/images/dog1.jpg"
+                  onAdopt={() => handleAdopt}
+                />
+                <PetCard
+                  id={1}
+                  nome="Rex"
+                  especie="Cachorro"
+                  dataNasc="01/01/2019"
+                  tamanho="Grande"
+                  personalidade="Brincalhão"
+                  imagem="src/assets/images/dog1.jpg"
+                  onAdopt={() => handleAdopt}
+                />
+                <PetCard
+                  id={1}
+                  nome="Rex"
+                  especie="Cachorro"
+                  dataNasc="01/01/2019"
+                  tamanho="Grande"
+                  personalidade="Brincalhão"
+                  imagem="src/assets/images/dog1.jpg"
+                  onAdopt={() => handleAdopt}
+                />
+                <PetCard
+                  id={1}
+                  nome="Rex"
+                  especie="Cachorro"
+                  dataNasc="01/01/2019"
+                  tamanho="Grande"
+                  personalidade="Brincalhão"
+                  imagem="src/assets/images/dog1.jpg"
+                  onAdopt={() => handleAdopt}
+                />
+                <PetCard
+                  id={1}
+                  nome="Rex"
+                  especie="Cachorro"
+                  dataNasc="01/01/2019"
+                  tamanho="Grande"
+                  personalidade="Brincalhão"
+                  imagem="src/assets/images/dog1.jpg"
+                  onAdopt={() => handleAdopt}
+                />
+                <PetCard
+                  id={1}
+                  nome="Rex"
+                  especie="Cachorro"
+                  dataNasc="01/01/2019"
+                  tamanho="Grande"
+                  personalidade="Brincalhão"
+                  imagem="src/assets/images/dog1.jpg"
+                  onAdopt={() => handleAdopt}
+                />
             </div>
-          )}
+
 
           {!loading && !error && pets.length > limit && (
             <div className="flex justify-center mt-6">
@@ -134,57 +194,57 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-12">
-        <h1 className="text-4xl font-bold text-gray-800 py-6 text-center">
+      <section className="py-12 px-4 md:px-8">
+        <h1 className="font-bold text-gray-800 py-6 text-center text-3xl lg:text-4xl">
           Por que adotar um pet?
         </h1>
 
-        <div className="container mx-auto grid grid-cols-1 xl:grid-cols-3  gap-4">
-          <div className="bg-white rounded-lg border border-primary-400 shadow p-6 text-center gap-4 flex">
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="bg-white rounded-lg border border-primary-400 shadow p-6 flex flex-col md:flex-row items-center gap-4">
             <img
-              src="src\assets\images\mulher_cachorro.png"
-              alt=""
-              className="size-32"
+              src="src/assets/images/mulher_cachorro.png"
+              alt="Mulher segurando cachorro"
+              className="w-24 h-24 md:w-32 md:h-32 object-cover"
             />
-            <div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-left ">
+            <div className="text-center md:text-left">
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">
                 Companhia
               </h3>
-              <p className="text-gray-600 text-left">
+              <p className="text-gray-600">
                 Pets são ótimos companheiros. Eles estão sempre dispostos a
                 brincar, passear e fazer companhia nos momentos de lazer.
               </p>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border border-primary-400 shadow p-6 text-center gap-4 flex">
+          <div className="bg-white rounded-lg border border-primary-400 shadow p-6 flex flex-col md:flex-row items-center gap-4">
             <img
-              src="src\assets\images\homem_gato.png"
-              alt=""
-              className="size-32"
+              src="src/assets/images/homem_gato.png"
+              alt="Homem segurando gato"
+              className="w-24 h-24 md:w-32 md:h-32 object-cover"
             />
-            <div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-left ">
+            <div className="text-center md:text-left">
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">
                 Mudança de vida
               </h3>
-              <p className="text-gray-600 text-left">
+              <p className="text-gray-600">
                 Adotar um pet é uma experiência transformadora. Você muda a vida
                 de um animalzinho e ele muda a sua para melhor.
               </p>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border border-primary-400 shadow p-6 text-center gap-4 flex">
+          <div className="bg-white rounded-lg border border-primary-400 shadow p-6 flex flex-col md:flex-row items-center gap-4">
             <img
-              src="src\assets\images\mulher_coracao.png"
-              alt=""
-              className="size-32"
+              src="src/assets/images/mulher_coracao.png"
+              alt="Mulher com coração"
+              className="w-24 h-24 md:w-32 md:h-32 object-cover"
             />
-            <div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-left ">
+            <div className="text-center md:text-left">
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">
                 Amor incondicional
               </h3>
-              <p className="text-gray-600 text-left">
+              <p className="text-gray-600">
                 Pets adotados são extremamente gratos e leais aos seus donos.
                 Eles sabem que foram salvos e retribuem com muito amor e
                 carinho.
@@ -210,7 +270,10 @@ export default function HomePage() {
                 <p className="text-gray-600 text-md">amipetsz@gmail.com</p>
               </div>
               <div>
-                <PhoneCall size={32} className="text-primary-300 inline-block" />
+                <PhoneCall
+                  size={32}
+                  className="text-primary-300 inline-block"
+                />
 
                 <p className="text-gray-600 text-md">(85) 998273477</p>
               </div>
