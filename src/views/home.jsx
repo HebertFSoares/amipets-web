@@ -97,14 +97,19 @@ export default function HomePage() {
 
       <section className="bg-primary-600 py-12" id="Pets">
         <div className="container mx-auto px-4">
-          <h3 className="text-4xl font-bold text-white text-center mb-6 lg:text-3xl">
+          <h3 className="text-2xl font-bold text-white text-center mb-6">
             Nossas criaturinhas
           </h3>
 
-
+          {loading ? (
+            <div className="text-white text-center py-4">
+              Carregando pets...
+            </div>
+          ) : error ? (
+            <div className="text-red-500 text-center py-4">{error}</div>
+          ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
-              {/*
-                              {displayedPets.map((pet) => (
+              {displayedPets.map((pet) => (
                 <PetCard
                   key={pet.id}
                   id={pet.id}
@@ -117,69 +122,8 @@ export default function HomePage() {
                   onAdopt={() => handleAdopt}
                 />
               ))}
-                */}
-                <PetCard
-                  id={1}
-                  nome="Rex"
-                  especie="Cachorro"
-                  dataNasc="01/01/2019"
-                  tamanho="Grande"
-                  personalidade="Brincalhão"
-                  imagem="src/assets/images/dog1.jpg"
-                  onAdopt={() => handleAdopt}
-                />
-                <PetCard
-                  id={1}
-                  nome="Rex"
-                  especie="Cachorro"
-                  dataNasc="01/01/2019"
-                  tamanho="Grande"
-                  personalidade="Brincalhão"
-                  imagem="src/assets/images/dog1.jpg"
-                  onAdopt={() => handleAdopt}
-                />
-                <PetCard
-                  id={1}
-                  nome="Rex"
-                  especie="Cachorro"
-                  dataNasc="01/01/2019"
-                  tamanho="Grande"
-                  personalidade="Brincalhão"
-                  imagem="src/assets/images/dog1.jpg"
-                  onAdopt={() => handleAdopt}
-                />
-                <PetCard
-                  id={1}
-                  nome="Rex"
-                  especie="Cachorro"
-                  dataNasc="01/01/2019"
-                  tamanho="Grande"
-                  personalidade="Brincalhão"
-                  imagem="src/assets/images/dog1.jpg"
-                  onAdopt={() => handleAdopt}
-                />
-                <PetCard
-                  id={1}
-                  nome="Rex"
-                  especie="Cachorro"
-                  dataNasc="01/01/2019"
-                  tamanho="Grande"
-                  personalidade="Brincalhão"
-                  imagem="src/assets/images/dog1.jpg"
-                  onAdopt={() => handleAdopt}
-                />
-                <PetCard
-                  id={1}
-                  nome="Rex"
-                  especie="Cachorro"
-                  dataNasc="01/01/2019"
-                  tamanho="Grande"
-                  personalidade="Brincalhão"
-                  imagem="src/assets/images/dog1.jpg"
-                  onAdopt={() => handleAdopt}
-                />
             </div>
-
+          )}
 
           {!loading && !error && pets.length > limit && (
             <div className="flex justify-center mt-6">
