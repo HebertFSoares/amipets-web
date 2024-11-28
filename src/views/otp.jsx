@@ -3,6 +3,7 @@ import { api } from "@/lib/apiWrapper";
 
 export default function OTPPage() {
   const [otp, setOtp] = useState("");
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -14,7 +15,8 @@ export default function OTPPage() {
 
     try {
       const response = await api.post("verify-otp", {
-        otp,
+        email,
+        otp
       });
 
       if (response.status === 200 && response.data.success) {
@@ -42,6 +44,18 @@ export default function OTPPage() {
           <h3 className="text-2xl font-semibold text-center text-[#4A4A4A] mb-6">Digite o Código OTP</h3>
 
           <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="flex">
+              <input
+                type="text"
+                id="email"
+                placeholder="seu@email.com"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                className="border border-gray-300 rounded-lg p-3 flex-grow"
+                required
+              />
+            </div>
             <div className="grid grid-cols-6 gap-4">
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="relative">
