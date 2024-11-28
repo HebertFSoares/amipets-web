@@ -6,9 +6,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Check, ChevronDown, ChevronUp } from "lucide-react"
 import PropTypes from 'prop-types';
 import { Controller } from "react-hook-form"
+import { cn } from "@/lib/utils"
 
 
-export function Combobox({ options = [], children, control, name }) {
+export function Combobox({ options = [], children, control, name, className }) {
 
     const [isOpened, setIsOpened] = useState(false);
 
@@ -20,7 +21,7 @@ export function Combobox({ options = [], children, control, name }) {
                     <Button
                         variant="outline"
                         role="combobox"
-                        className={``}
+                        className={cn(className)}
                     >
                         {children}
                         {isOpened ? <ChevronUp /> : <ChevronDown />}
@@ -74,5 +75,5 @@ Combobox.propTypes = {
     className: PropTypes.string,
     children: PropTypes.string,
     name: PropTypes.string,
-    control: PropTypes.any,
+    control: PropTypes.any
 }

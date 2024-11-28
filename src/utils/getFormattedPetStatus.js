@@ -3,7 +3,7 @@ export function getFormattedPetStatus(status) {
 
     const statusMap = {
         "0": "Livre",
-        "1": "Reservado",
+        "1": "Em análise",
         "2": "Adotado",
     }
 

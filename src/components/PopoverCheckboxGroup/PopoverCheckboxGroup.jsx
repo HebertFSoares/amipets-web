@@ -6,9 +6,10 @@ import { ChevronDown, ChevronUp } from "lucide-react"
 import PropTypes from 'prop-types';
 import { Checkbox } from "@/components/ui/checkbox"
 import { Controller } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 
-export function PopoverCheckboxGroup({ options = [], children, name, control }) {
+export function PopoverCheckboxGroup({ options = [], children, name, control, className }) {
 
     const [isOpened, setIsOpened] = useState(false);
 
@@ -20,7 +21,7 @@ export function PopoverCheckboxGroup({ options = [], children, name, control }) 
                     <Button
                         variant="outline"
                         aria-expanded={open}
-                        className={``}
+                        className={cn(className)}
                     >
                         {children}
                         {isOpened ? <ChevronUp /> : <ChevronDown />}

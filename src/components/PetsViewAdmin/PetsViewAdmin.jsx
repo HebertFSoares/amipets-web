@@ -2,16 +2,19 @@
 import { useEffect, useState } from "react"
 import { Combobox } from "../Combobox/Combobox"
 import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } from "../ui/table"
-import { PencilIcon, PlusCircle, Search, Trash2 } from "lucide-react"
-import { PopoverCheckboxGroup } from "../PopoverCheckboxGroup/PopoverCheckboxGroup"
-import axios from "axios"
 
+import { Input } from "../ui/input"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
+import { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } from "../ui/table"
+import { Ellipsis, PencilIcon, PlusCircle, Search, Trash2 } from "lucide-react"
+import { PopoverCheckboxGroup } from "../PopoverCheckboxGroup/PopoverCheckboxGroup"
 import { getFormattedPetStatus } from "../../utils/getFormattedPetStatus.js";
 import { getFormattedDate } from "@/utils/getFormattedDate"
 import { capitalize } from "@/utils/capitalize"
 import { useForm } from "react-hook-form"
+import axios from "axios"
+import { DialogDescription } from "@radix-ui/react-dialog"
+import { PetFormDialog } from "../PetFormDialog/PetFormDialog"
 
 
 export function PetsViewAdmin() {
@@ -30,14 +33,14 @@ export function PetsViewAdmin() {
 
     const species = ["Gato", "Cachorro", "Coelho"];
     const sizes = ["Pequeno", "Médio", "Grande"];
-    const status = ["Livre", "Reservado", "Adotado"];
+    const status = ["Livre", "Em análise", "Adotado"];
 
     const mapForFilters = {
         "Pequeno": "pequeno",
         "Médio": "médio",
         "Grande": "grande",
         "Livre": "0",
-        "Reservado": "1",
+        "Em análise": "1",
         "Adotado": "2"
     }
 
@@ -64,8 +67,6 @@ export function PetsViewAdmin() {
 
     function searchPets(data) {
 
-        console.log(data);
-
         const getPets = async () => {
             const pets = await axios.get("http://localhost:8000/api/pets", {
                 params: {
@@ -83,6 +84,10 @@ export function PetsViewAdmin() {
         getPets();
     }
 
+    function createPet(data) {
+        console.log(data);
+    }
+
     function handleCleanFilters() {
         setValue("name", "");
         setValue("id", "");
@@ -92,29 +97,38 @@ export function PetsViewAdmin() {
     }
 
     return (
-        <div className="p-6 max-w-4xl mx-auto space-y-4">
-            <div className="flex justify-between items-center mb-4">
-                <form className="flex items-center gap-2" onSubmit={handleSubmit(searchPets)}>
-                    <Input name="id" placeholder="ID do pet" {...register("id")}></Input>
-                    <Input name="nome" placeholder="Nome do pet" {...register("name")}></Input>
-                    <Combobox options={species} control={control} name="species">
-                        Espécie
-                    </Combobox>
-                    <PopoverCheckboxGroup options={status} control={control} name="status" >
-                        Status
-                    </PopoverCheckboxGroup>
-                    <PopoverCheckboxGroup options={sizes} control={control} name="sizes" >
-                        Tamanho
-                    </PopoverCheckboxGroup>
-                    <Button type="submit" variant="outline">
-                        <Search />
-                        Filtrar resultados
-                    </Button>
-                    <Button type="submit" variant="outline" onClick={handleCleanFilters}>
-                        Limpar Filtros
-                    </Button>
+        <div className="p-6 max-w-5xl space-y-4">
+
+            <h1 className="text-3xl font-bold ">Pets</h1>
+
+            <div className="">
+                <form className="flex justify-between gap-2 flex-wrap" onSubmit={handleSubmit(searchPets)}>
+
+                    <div className="flex space-x-2 items-center">
+                        <Input name="id" placeholder="ID do pet" {...register("id")} className="max-w-24" />
+                        <Input name="nome" placeholder="Nome do pet" {...register("name")} className="max-w-52" />
+                        <Combobox options={species} control={control} name="species" >
+                            Espécie
+                        </Combobox>
+                        <PopoverCheckboxGroup options={status} control={control} name="status" >
+                            Status
+                        </PopoverCheckboxGroup>
+                        <PopoverCheckboxGroup options={sizes} control={control} name="sizes">
+                            Tamanho
+                        </PopoverCheckboxGroup>
+                    </div>
+                    <div className="flex justify-start space-x-2">
+                        <Button type="submit" variant="link" onClick={handleCleanFilters}>
+                            Limpar Filtros
+                        </Button>
+                        <Button type="submit" variant="outline">
+                            <Search />
+                            Filtrar resultados
+                        </Button>
+                    </div>
+
                 </form>
-            </div>
+            </div >
             <div className="border-t pt-2">
             </div>
             <div className="border rounded-lg p-2">
@@ -146,15 +160,57 @@ export function PetsViewAdmin() {
                                     <TableCell>{getFormattedDate(pet.dataNascimento)}</TableCell>
                                     <TableCell>{getFormattedPetStatus(pet.status)}</TableCell>
                                     <TableCell>{pet.tamanho ? capitalize(pet.tamanho) : "-"}</TableCell>
-                                    <TableCell><PencilIcon className="w-4" /></TableCell>
-                                    <TableCell><Trash2 className="w-4" /> </TableCell>
+                                    <TableCell>
+                                        <Button variant="ghost">
+                                            <Ellipsis className="w-4" />
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell>
+                                        <PetFormDialog
+                                            description={"Edite as informações do pet no sistema. Clique em salvar quando tiver finalizado."}
+                                            title={"Editar pet"}
+                                            initialValues={{
+                                                id: pet.id,
+                                                name: pet.nome,
+                                                specie: pet.especie,
+                                                birthDate: getFormattedDate(pet.dataNascimento),
+                                                size: capitalize(pet.tamanho),
+                                                description: pet.descricao,
+                                                status: getFormattedPetStatus(pet.status),
+                                                personalities: []
+                                            }}
+                                        >
+                                            <Button type="button" variant="ghost"><PencilIcon className="w-4" /></Button>
+                                        </PetFormDialog>
+
+                                    </TableCell>
+                                    <TableCell>
+                                        <Trash2 className="w-4" />
+                                    </TableCell>
                                 </TableRow>
                             })
                         }
                     </TableBody>
                 </Table>
             </div>
-            <Button> <PlusCircle /> Cadastrar Pet</Button>
-        </div>
+
+            <PetFormDialog
+                description={"Crie um novo pet no sistema. Clique em salvar quando tiver finalizado."}
+                title={"Cadastrar pet"}
+                onSubmit={createPet}
+                initialValues={{
+                    id: "",
+                    name: "",
+                    specie: "",
+                    birthDate: "",
+                    description: "",
+                    personalities: [],
+                    status: "Livre"
+                }}
+            >
+                <Button type="button"> <PlusCircle />Cadastrar Pet</Button>
+            </PetFormDialog>
+
+        </div >
     )
 }
