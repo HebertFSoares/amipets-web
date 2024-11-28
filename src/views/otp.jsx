@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { api } from "@/lib/apiWrapper";
+import { useNavigate } from "react-router-dom";
 
 export default function OTPPage() {
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,8 +23,10 @@ export default function OTPPage() {
         otp
       });
 
-      if (response.status === 200 && response.data.success) {
+      if (response.status === 201) {
         console.log("OTP verificado com sucesso", response.data);
+        setMessage("Sua conta foi verificada com sucesso! Faça login para continuar.");
+        setTimeout(() => { navigate("/login") }, 5000);
       }
     } catch (err) {
       setError("Código OTP inválido. Tente novamente.");
@@ -79,6 +85,10 @@ export default function OTPPage() {
             </div>
 
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            
+            {message && (
+              <p className="text-primary-300 text-sm text-center mb-4">{message}</p>
+            )}
 
             <div>
               <button

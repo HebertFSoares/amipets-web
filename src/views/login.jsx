@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { api } from "@/lib/apiWrapper";
-import { Link } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 
 export default function LoginPage() {
@@ -8,7 +8,10 @@ export default function LoginPage() {
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
+  const navigate = useNavigate();
+  
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -23,7 +26,9 @@ export default function LoginPage() {
 
       if (response.status === 200) {
         console.log("Login bem-sucedido", response.data);
+        setMessage("Login realizado com sucesso! Redirecionando...");
         localStorage.setItem("authToken", response.data.token);
+        setTimeout(() => { navigate("/") }, 5000);
       }
     } catch (err) {
       setError("Erro ao fazer login. Verifique suas credenciais.");
@@ -82,6 +87,10 @@ export default function LoginPage() {
 
             {error && (
               <p className="text-red-500 text-sm text-center mb-4">{error}</p>
+            )}
+            
+            {message && (
+              <p className="text-primary-300 text-sm text-center mb-4">{message}</p>
             )}
 
             <div className="flex flex-col mb-6 gap-2">

@@ -15,9 +15,12 @@ export default function Header() {
           <Link to="/pets">Pets</Link>
         </Button>
       </div>
-      <div>
+      <div className="flex space-x-2">
         <Button className="bg-primary-400">
           <Link to="/login">Entrar</Link>
+        </Button>
+        <Button className="bg-primary-400">
+          <Link to="/registrar">Registrar</Link>
         </Button>
       </div>
     </div>
