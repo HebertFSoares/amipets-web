@@ -1,17 +1,108 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
+import { jwtDecode } from "jwt-decode";
+import { api } from '@/lib/apiWrapper';
+import axios from 'axios';
 
-export default function ModalAdocao({ isOpen, closeModal, pet, status }) {
+export default function ModalAdocao({ isOpen, closeModal, pet, status, adocaoId }) {
   const [isRequestSent, setIsRequestSent] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [adotanteId, setAdotanteId] = useState(null);
+  const [adocaoStatus, setAdocaoStatus] = useState(null);
+  const [isStatusLoading, setIsStatusLoading] = useState(true);
+
+  const token = localStorage.getItem('authToken');
+
+  useEffect(() => {
+    if (isOpen && pet.id) {
+      console.log("ID do pet:", pet.id);
+      const fetchStatus = async () => {
+        try {
+          setIsStatusLoading(true);
+          console.log("Requisitando status para o pet com id:", pet.id); 
+          
+          const response = await api.get(`/adocao/pet/${pet.id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.data && response.data.status) {
+            setAdocaoStatus(response.data.status);
+          } else {
+            setError("Status da adoção não encontrado.");
+          }
+        } catch (err) {
+          setError("Erro ao carregar o status da adoção.");
+          console.error("Erro ao carregar status:", err);
+        } finally {
+          setIsStatusLoading(false);
+        }
+      };
+
+      fetchStatus();
+    }
+  }, [isOpen, pet.id]);
+  
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setAdotanteId(decodedToken.userId);
+      } catch (err) {
+        console.error("Erro ao decodificar o token:", err.message);
+        setError("Erro de autenticação. Faça login novamente.");
+      }
+    }
+  }, [token]);
 
   const statusSteps = [
-    { id: 1, title: 'Solicitação Enviada', active: isRequestSent || status === 'analisando' || status === 'aprovado' },
-    { id: 2, title: 'Em Análise', active: status === 'analisando' || status === 'aprovado' },
-    { id: 3, title: 'Aprovado', active: status === 'aprovado' },
+    { id: 1, title: 'Solicitação Enviada', active: adocaoStatus === 'SOLICITACAO_ENVIADA' || adocaoStatus === 'EM_ANALISE' || adocaoStatus === 'APROVADO' },
+    { id: 2, title: 'Em Análise', active: adocaoStatus === 'EM_ANALISE' || adocaoStatus === 'APROVADO' },
+    { id: 3, title: 'Aprovado', active: adocaoStatus === 'APROVADO' },
   ];
+  
+  const handleRequestSubmit = async () => {
+    setLoading(true);
+    setError("");
 
-  const handleRequestSubmit = () => {
-    setIsRequestSent(true);
+    try {
+      if (!token) {
+        setError("Você precisa estar autenticado para fazer uma solicitação.");
+        return;
+      }
+
+      if (!adotanteId) {
+        setError("Não foi possível identificar o adotante. Faça login novamente.");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await api.post(
+        '/adocao',
+        {
+          adotanteId,
+          petId: pet.id,
+        },
+        config
+      );
+
+      if (response.status === 200) {
+        setIsRequestSent(true);
+        console.log("Solicitação de adoção enviada com sucesso!", response.data);
+      }
+    } catch (err) {
+      setError("Erro ao enviar solicitação de adoção. Tente novamente.");
+      console.error("Erro ao enviar solicitação:", err.response?.data || err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,33 +132,24 @@ export default function ModalAdocao({ isOpen, closeModal, pet, status }) {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <div className="mb-6">
-                  <div className="flex items-center justify-between">
-                    {statusSteps.map((step, index) => (
-                      <div key={step.id} className="flex flex-col items-center">
-                        <div
-                          className={`flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold ${
-                            step.active ? 'bg-[#7DA632] text-white' : 'bg-gray-300 text-gray-500'
-                          }`}
-                        >
-                          {step.id}
-                        </div>
-                        <div
-                          className={`mt-2 text-sm ${
-                            step.active ? 'text-[#7DA632]' : 'text-gray-400'
-                          }`}
-                        >
-                          {step.title}
-                        </div>
+              <div className="mb-6">
+                <div className="flex items-center justify-between">
+                  {statusSteps.map((step) => (
+                    <div key={step.id} className="flex flex-col items-center">
+                      <div
+                        className={`flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold ${step.active ? 'bg-[#7DA632] text-white' : 'bg-gray-300 text-gray-500'}`}
+                      >
+                        {step.id}
                       </div>
-                    ))}
-                  </div>
+                      <div className={`mt-2 text-sm ${step.active ? 'text-[#7DA632]' : 'text-gray-400'}`}>
+                        {step.title}
+                      </div>
+                    </div>
+                  ))}
                 </div>
+              </div>
 
-                <Dialog.Title
-                  as="h3"
-                  className="text-lg font-bold leading-6 text-gray-900"
-                >
+                <Dialog.Title as="h3" className="text-lg font-bold leading-6 text-gray-900">
                   Adote {pet?.nome || 'um Pet'}
                 </Dialog.Title>
                 <div className="mt-4 space-y-2">
@@ -84,16 +166,14 @@ export default function ModalAdocao({ isOpen, closeModal, pet, status }) {
                     <strong>Descrição:</strong> {pet?.descricao || 'Sem descrição'}
                   </p>
                 </div>
-
                 <div className="mt-4 bg-[#F5F8E6] p-4 rounded-lg">
                   <p className="text-sm" style={{ color: '#7DA632' }}>
-                    {isRequestSent
-                      ? 'Sua solicitação está sendo analisada. Você será notificado por e-mail quando o status for atualizado.'
-                      : 'Clique em "Enviar Solicitação" para iniciar o processo de adoção. Após o envio, você será notificado por e-mail com o status de sua solicitação.'}
+                    Verifique o status acima. Qualquer dúvida, entre em contato com o suporte.
                   </p>
+                  {error && <p className="text-red-500 text-sm">{error}</p>}
                 </div>
 
-                <div className="mt-6 flex justify-end space-x-4">
+                <div className="mt-6 flex justify-end space-x-4 w-full">
                   <button
                     type="button"
                     className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
@@ -101,18 +181,22 @@ export default function ModalAdocao({ isOpen, closeModal, pet, status }) {
                   >
                     Cancelar
                   </button>
-                  {!isRequestSent && (
+                  {!isRequestSent &&
+                  adocaoStatus !== 'SOLICITACAO_ENVIADA' &&
+                  adocaoStatus !== 'EM_ANALISE' &&
+                  adocaoStatus !== 'APROVADO' && (
                     <button
                       type="button"
                       className="px-4 py-2 text-sm font-medium text-white"
                       style={{ backgroundColor: '#7DA632' }}
                       onClick={handleRequestSubmit}
+                      disabled={loading}
                     >
-                      Enviar Solicitação
+                      {loading ? 'Enviando...' : 'Enviar Solicitação'}
                     </button>
                   )}
-                </div>
-              </Dialog.Panel>
+              </div>
+              </Dialog.Panel> 
             </Transition.Child>
           </div>
         </div>
