@@ -9,22 +9,7 @@ export default function PetGallery() {
 
   const fetchPets = async () => {
     try {
-      const token = localStorage.getItem('authToken');
-
-      if (!token) {
-        console.error("Token não encontrado no LocalStorage");
-        return;
-      }
-
-      const response = await api.get("pets", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log("Status da resposta:", response.status);
-      console.log("Headers da resposta:", response.headers);
-
+      const response = await api.get("pets");
       const data = response.data;
 
       if (Array.isArray(data)) {

@@ -58,8 +58,6 @@ export function PetsFilters() {
 
     function searchPetsFilters(data) {
 
-        console.log(data);
-
         setSearchParams(state => {
             if (data.name) {
                 state.set('name', data.name);
@@ -138,7 +136,7 @@ export function PetsFilters() {
                 </PopoverCheckboxGroup>
             </div>
             <div className="flex justify-start space-x-2">
-                <Button type="submit" variant="link" onClick={handleCleanFilters}>
+                <Button type="button" variant="link" onClick={handleCleanFilters} >
                     Limpar Filtros
                 </Button>
                 <Button type="submit" variant="outline">

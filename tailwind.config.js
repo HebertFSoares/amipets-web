@@ -7,6 +7,7 @@ export default {
   	extend: {
   		colors: {
   			text: {
+				'900': '#FEFEFE',
   				'500': '#CCCCCC',
   				DEFAULT: '#000000'
   			},

@@ -1,3 +1,4 @@
+import { api } from "@/lib/apiWrapper";
 import axios from "axios";
 
 export async function fetchPets(filters) {
@@ -9,19 +10,22 @@ export async function fetchPets(filters) {
     }
 
     if (filters.species && filters.species.length > 0) {
-        params.especie = filters.species;
+        params.especie = JSON.stringify(filters.species);
     }
 
     if (filters.sizes && filters.sizes.length > 0) {
-        params.tamanho = filters.sizes;
+        params.tamanho = JSON.stringify(filters.sizes);
     }
 
     if (filters.status && filters.status.length > 0) {
-        params.status = filters.status;
+        params.status = JSON.stringify(filters.status);
     }
 
     console.log(params);
 
-    const pets = await axios.get("http://localhost:8000/api/pets");
+    const pets = await api.get("pets", {
+        params: params
+    });
+    console.log(pets.data);
     return pets.data;
 }

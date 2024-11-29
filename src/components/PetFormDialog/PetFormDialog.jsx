@@ -30,9 +30,10 @@ const petsSchema = z.object({
         }, "A data deve estar no formato DD/MM/AAAA!")
         .transform((date) => transformBrazilianDateToGeneralDate(date)),
     personalities: z.array(z.object({
-        value: z.string().min(3, "A personalidade não pode ser vazia.")
-    }))
-        .transform((personalities) => personalities.map(personality => personality.value)),
+        value: z.string()
+    })),
+    // .refine(personalities => personalities.every(({ value }) => value.length > 1), "Cada personalidade não pode ser vazia!")
+    // .transform((personalities) => personalities.map(personality => personality.value)),
     size: z.string().toLowerCase(),
     status: z.string()
         .toLowerCase()
@@ -51,8 +52,12 @@ export function PetFormDialog({ children, initialValues, onSubmit, title, descri
 
     const { register, handleSubmit, control, formState } = useForm({
         resolver: zodResolver(petsSchema),
-        defaultValues: initialValues
+        defaultValues: {
+            personalities: ["dj", "artista"]
+        }
     });
+
+    console.lo
 
     const [newPersonality, setNewPersonality] = useState("");
 
@@ -122,7 +127,7 @@ export function PetFormDialog({ children, initialValues, onSubmit, title, descri
 
                             <FormField
                                 id="description"
-                                label={"Descrição *"}
+                                label={"Descrição"}
                                 register={register}
                                 error={formState.errors.description}
                             />
@@ -144,11 +149,13 @@ export function PetFormDialog({ children, initialValues, onSubmit, title, descri
                                     />
                                     <Button type="button" onClick={addNewPersonality} className="bg-primary-500 hover:bg-primary-400 ">Adicionar <PlusCircle /></Button>
                                 </div>
+                                {formState.errors.personalities && <span className="text-xs mt-1 text-rose-500 font-medium">{formState.errors.personalities.message} </span>}
                             </div>
 
                             <div className="flex flex-wrap gap-2">
                                 {
                                     fields.map((field, index) => {
+                                        console.log(field.value);
                                         return < span key={field.id} className="rounded-3xl bg-primary-800 text-primary-200 font-semibold text-xs py-2 px-2 items-center flex gap-1" >
                                             <span>{field.value}</span>
                                             <button type="button" onClick={() => remove(index)}> <X className="max-h-3 max-w-3" /> </button>

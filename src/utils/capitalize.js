@@ -1,7 +1,11 @@
 
 export function capitalize(text) {
 
-    const capitalizedString = text[0].toUpperCase() + text.slice(1);
+    if (text.length > 0) {
+        const capitalizedString = text[0].toUpperCase() + text.slice(1);
 
-    return capitalizedString;
+        return capitalizedString;
+    }
+
+    return text;
 }
