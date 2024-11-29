@@ -9,14 +9,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod"
 import { capitalize } from "@/utils/capitalize";
 import { ScrollArea } from "../ui/scroll-area";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { isValidBrazilianDate } from "@/utils/isBrazilianValidDate";
 import { transformBrazilianDateToGeneralDate } from "@/utils/transformBrazilianDateToGeneralDate";
 import { FormField } from "../FormField/FormField";
 import PropTypes from 'prop-types';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 
 const petsSchema = z.object({
-    id: z.string(),
+    id: z.coerce.number(),
     name: z.string()
         .min(1, "O nome é obrigatório!")
         .transform(text => text.trim().split(" ").map((name) => capitalize(name)).join(" ")),
@@ -31,9 +33,9 @@ const petsSchema = z.object({
         .transform((date) => transformBrazilianDateToGeneralDate(date)),
     personalities: z.array(z.object({
         value: z.string()
-    })),
-    // .refine(personalities => personalities.every(({ value }) => value.length > 1), "Cada personalidade não pode ser vazia!")
-    // .transform((personalities) => personalities.map(personality => personality.value)),
+    }))
+        .refine(personalities => personalities.every(({ value }) => value.length > 1), "Cada personalidade não pode ser vazia!")
+        .transform((personalities) => personalities.map(personality => personality.value)),
     size: z.string().toLowerCase(),
     status: z.string()
         .toLowerCase()
@@ -45,19 +47,42 @@ const petsSchema = z.object({
             }
             return statusMap[status]
         }),
-    description: z.coerce.string()
+    description: z.string()
 })
 
 export function PetFormDialog({ children, initialValues, onSubmit, title, description }) {
 
-    const { register, handleSubmit, control, formState } = useForm({
+    const [open, setOpen] = useState(false);
+
+    const [searchParams] = useSearchParams();
+
+    const id = searchParams.get('id');
+    const name = searchParams.get('name');
+    let species = JSON.parse(searchParams.get('species'));
+    let sizes = JSON.parse(searchParams.get('sizes'));
+    let status = JSON.parse(searchParams.get('status'));
+
+    const { register, handleSubmit, control, formState, reset } = useForm({
         resolver: zodResolver(petsSchema),
-        defaultValues: {
-            personalities: ["dj", "artista"]
-        }
+        values: initialValues
     });
 
-    console.lo
+    const queryClient = useQueryClient();
+
+    const { mutateAsync: submitPetFormFn } = useMutation({
+        mutationFn: (onSubmit),
+        onSuccess() {
+            console.log("estamos rodando");
+            queryClient.invalidateQueries(['pets', id, name, species, sizes, status]);
+            setOpen(false);
+            reset()
+        },
+    });
+
+    async function handleSubmitForm(data) {
+        console.log("oi");
+        await submitPetFormFn(data);
+    }
 
     const [newPersonality, setNewPersonality] = useState("");
 
@@ -72,8 +97,7 @@ export function PetFormDialog({ children, initialValues, onSubmit, title, descri
     }
 
     return <>
-
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
@@ -85,7 +109,7 @@ export function PetFormDialog({ children, initialValues, onSubmit, title, descri
                     <DialogDescription>{description}</DialogDescription>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit((data) => onSubmit(data))} >
+                <form onSubmit={handleSubmit(handleSubmitForm)} >
 
                     <ScrollArea >
                         <div className="pr-4 pl-4 max-h-[500px] space-y-2">
@@ -155,7 +179,6 @@ export function PetFormDialog({ children, initialValues, onSubmit, title, descri
                             <div className="flex flex-wrap gap-2">
                                 {
                                     fields.map((field, index) => {
-                                        console.log(field.value);
                                         return < span key={field.id} className="rounded-3xl bg-primary-800 text-primary-200 font-semibold text-xs py-2 px-2 items-center flex gap-1" >
                                             <span>{field.value}</span>
                                             <button type="button" onClick={() => remove(index)}> <X className="max-h-3 max-w-3" /> </button>
@@ -177,9 +200,7 @@ export function PetFormDialog({ children, initialValues, onSubmit, title, descri
                 </form>
 
             </DialogContent>
-
         </Dialog >
-
     </>
 }
 

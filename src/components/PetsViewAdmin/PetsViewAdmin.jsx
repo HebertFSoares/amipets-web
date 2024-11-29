@@ -20,6 +20,8 @@ import { PetState } from "@/utils/PetState"
 import { PetsFilters } from "../PetsFilters/PetsFilters"
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/apiWrapper";
+import { sendPetToAPI } from "@/services/sendPetToAPI";
+import { updatePet } from "@/services/updatePet";
 
 export function PetsViewAdmin() {
 
@@ -42,20 +44,28 @@ export function PetsViewAdmin() {
         }),
     });
 
-
-    async function createPet(pet) {
-        const body = {
-            nome: pet.name,
-            especie: pet.specie,
-            descricao: pet.description,
-            dataNascimento: pet.birthDate,
-            personalidade: pet.personalities,
-            status: pet.status,
-            tamanho: pet.size
+    async function createPet(data) {
+        try {
+            await sendPetToAPI(data);
+            alert('Pet cadastrado com sucesso');
         }
-        console.log(body);
-        const res = await api.post("pets", body)
-        console.log(res);
+        catch (err) {
+            console.log(err);
+            alert(err);
+            alert('Erro ao cadastrar pet');
+        }
+    }
+
+    async function editPet(data) {
+        try {
+            await updatePet(data);
+            alert('Pet editado com sucesso');
+        }
+        catch (err) {
+            console.log(err);
+            alert(err);
+            alert('Erro ao editar pet');
+        }
     }
 
     return (
@@ -104,8 +114,10 @@ export function PetsViewAdmin() {
                                         </TableCell>
                                         <TableCell>
                                             <PetFormDialog
+                                                key={pet.id}
                                                 description={"Edite as informações do pet no sistema. Clique em salvar quando tiver finalizado."}
                                                 title={"Editar pet"}
+                                                onSubmit={editPet}
                                                 initialValues={{
                                                     id: pet.id,
                                                     name: pet.nome,
@@ -114,7 +126,7 @@ export function PetsViewAdmin() {
                                                     size: capitalize(pet.tamanho),
                                                     description: pet.descricao,
                                                     status: getFormattedPetStatus(pet.status),
-                                                    personalities: pet.personalidade
+                                                    personalities: pet.personalidade && pet.personalidade.map((x) => { return { value: x } })
                                                 }}
                                             >
                                                 <Button type="button" variant="ghost"><PencilIcon className="w-4" /></Button>
