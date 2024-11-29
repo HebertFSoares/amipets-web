@@ -33,9 +33,6 @@ export default function ModalAdocao({ isOpen, closeModal, pet, status, adocaoId 
           } else {
             setError("Status da adoção não encontrado.");
           }
-        } catch (err) {
-          setError("Erro ao carregar o status da adoção.");
-          console.error("Erro ao carregar status:", err);
         } finally {
           setIsStatusLoading(false);
         }

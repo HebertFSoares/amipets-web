@@ -17,8 +17,14 @@ export default function LoginPage() {
   const handleLogin = async (event) => {
     event.preventDefault();
 
+    if (!email || !senha) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
+
     setLoading(true);
     setError("");
+    setMessage("");
 
     try {
       const response = await api.post("login", {
@@ -29,11 +35,15 @@ export default function LoginPage() {
       if (response.status === 200) {
         console.log("Login bem-sucedido", response.data);
         setMessage("Login realizado com sucesso! Redirecionando...");
-        user.login(response.data)
+        user.login(response.data);
         setTimeout(() => { navigate("/") }, 3000);
       }
     } catch (err) {
-      setError("Erro ao fazer login. Verifique suas credenciais.");
+      if (err.response?.status === 401) {
+        setError("Credenciais incorretas. Verifique o e-mail e senha.");
+      } else {
+        setError("Erro ao fazer login. Tente novamente.");
+      }
       console.error("Erro no login:", err.response?.data || err.message);
     } finally {
       setLoading(false);
@@ -44,7 +54,7 @@ export default function LoginPage() {
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow flex items-center justify-center gap-16">
         <div className="w-[244px] h-[450px] rounded-lg bg-primary-400" />
-        <div className=" max-w-lg bg-white p-8 rounded-lg border border-primary-400 shadow-lg w-[420px]">
+        <div className="max-w-lg bg-white p-8 rounded-lg border border-primary-400 shadow-lg w-[420px]">
           <div className="flex flex-col gap-2 mb-6 ">
             <h2 className="text-3xl font-bold text-gray-800">Entrar</h2>
             <p>Que bom receber você novamente!</p>
@@ -52,10 +62,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin}>
             <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 E-mail
               </label>
               <input
@@ -70,10 +77,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Senha
               </label>
               <input

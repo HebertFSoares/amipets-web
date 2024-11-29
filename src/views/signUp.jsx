@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { api } from "@/lib/apiWrapper";
 import { Link, useNavigate } from "react-router-dom";
+import InputMask from 'react-input-mask';
 
 export default function SignUpPage() {
   const [nome, setNome] = useState("");
@@ -99,9 +100,8 @@ export default function SignUpPage() {
               >
                 Telefone
               </label>
-              <input
-                type="text"
-                id="telefone"
+              <InputMask
+                mask="(99) 99999-9999" // Definindo a máscara para o telefone
                 value={telefone}
                 onChange={(e) => setTelefone(e.target.value)}
                 className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring-[#7DA632] focus:border-[#7DA632] p-4 text-lg"

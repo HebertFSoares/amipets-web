@@ -32,6 +32,27 @@ export default function PetDetail() {
     return <div className="text-red-500">{error}</div>;
   }
 
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(date).toLocaleDateString('pt-BR', options);
+  };
+
+  const formatStatus = (status) => {
+    if (status === "0") {
+      return <span className="text-green-500 font-bold">Disponível para adoção</span>;
+    } else if (status === "1") {
+      return <span className="text-red-500 font-bold">Adotado</span>;
+    }
+    return <span className="text-gray-500">Status desconhecido</span>;
+  };
+
+  const formatPersonalidade = (personalidade) => {
+    if (Array.isArray(personalidade)) {
+      return personalidade.join(', ');
+    }
+    return personalidade || '';
+  };
+  
   return (
     <div className="container mx-auto mt-8 px-4">
       {pet ? (
@@ -51,27 +72,29 @@ export default function PetDetail() {
                   <strong>Espécie:</strong> {pet.especie}
                 </p>
                 <p className="text-lg text-gray-700">
-                  <strong>Data de Nascimento:</strong> {pet.dataNasc}
+                  <strong>Data de Nascimento:</strong> {formatDate(pet.dataNascimento)}
                 </p>
                 <p className="text-lg text-gray-700">
                   <strong>Tamanho:</strong> {pet.tamanho}
                 </p>
                 <p className="text-lg text-gray-700">
-                  <strong>Personalidade:</strong> {pet.personalidade}
+                  <strong>Personalidade:</strong> {formatPersonalidade(pet.personalidade)}
+                </p>
+                <p className="text-lg text-gray-700">
+                  <strong>Descrição:</strong> {pet.descricao}
+                </p>
+                <p className="text-lg text-gray-700">
+                  <strong>Status:</strong> {formatStatus(pet.status)}
                 </p>
                 <div className="flex space-x-4">
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="bg-[#7DA632] text-white px-6 py-3 rounded-lg"
-                  >
-                    Adotar
-                  </button>
-                  <Link
-                    to={`/adotar/${pet.id}`}
-                    className="bg-[#7DA632] text-white px-6 py-3 rounded-lg"
-                  >
-                    Saiba mais
-                  </Link>
+                  {pet.status === "0" && (
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className="bg-[#7DA632] text-white px-6 py-3 rounded-lg"
+                    >
+                      Adotar
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

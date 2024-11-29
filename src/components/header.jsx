@@ -37,7 +37,6 @@ export default function Header() {
         <div className="flex space-x-2">
           <BurgerMenu />
           <Button className="bg-primary-400">
-            {/* TODO: Trocar pelo hamburguer e fazer o modal com todas as opções e afins */}
             <Link to="#" onClick={user.logout}>Logout</Link>
           </Button>
         </div>
