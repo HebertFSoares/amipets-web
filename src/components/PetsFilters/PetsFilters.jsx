@@ -113,11 +113,14 @@ export function PetsFilters() {
     }
 
     function handleCleanFilters() {
-        setValue("name", "");
-        setValue("id", "");
-        setValue("sizes", []);
-        setValue("status", []);
-        setValue("species", []);
+        setSearchParams(state => {
+            state.delete('name');
+            state.delete('id');
+            state.delete('sizes');
+            state.delete('status');
+            state.delete('species');
+            return state;
+        })
     }
 
     return (
