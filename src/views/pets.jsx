@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import PetCard from "@/components/petCard";
-import { api } from "@/lib/apiWrapper";
+import { Button } from '@/components/ui/button';
+import PetCard from '@/components/petCard';
+import { api } from '@/lib/apiWrapper';
 
 export default function PetGallery() {
   const [pets, setPets] = useState([]);
@@ -9,7 +9,7 @@ export default function PetGallery() {
 
   const fetchPets = async () => {
     try {
-      const response = await api.get("pets");
+      const response = await api.get('pets');
       const data = response.data;
 
       if (Array.isArray(data)) {
@@ -18,21 +18,21 @@ export default function PetGallery() {
           nome: pet.nome,
           especie: pet.especie,
           dataNasc: pet.dataNascimento
-            ? new Date(pet.dataNascimento).toLocaleDateString("pt-BR") 
-            : "N/A",
-          tamanho: pet.tamanho || "N/A",
-          personalidade: pet.personalidade?.join(", ") || "N/A",
-          imagem: pet.foto || "https://via.placeholder.com/150",
+            ? new Date(pet.dataNascimento).toLocaleDateString('pt-BR')
+            : 'N/A',
+          tamanho: pet.tamanho || 'N/A',
+          personalidade: pet.personalidade?.join(', ') || 'N/A',
+          imagem: pet.foto || 'https://via.placeholder.com/150',
         }));
 
         setPets(formattedData);
       } else {
-        console.error("Resposta inesperada da API:", data);
+        console.error('Resposta inesperada da API:', data);
       }
 
       setLoading(false);
     } catch (error) {
-      console.error("Erro ao buscar os pets:", error.message);
+      console.error('Erro ao buscar os pets:', error.message);
       setLoading(false);
     }
   };
@@ -44,13 +44,13 @@ export default function PetGallery() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="container mx-auto mt-8 px-4">
-        <div className="bg-white p-6 rounded-lg shadow-md flex space-x-4">
-          <select className="border border-gray-300 rounded-lg p-3">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+          <select className="border border-gray-300 rounded-lg p-3 w-full sm:w-auto">
             <option value="">Espécie</option>
             <option value="Cachorro">Cachorro</option>
             <option value="Gato">Gato</option>
           </select>
-          <select className="border border-gray-300 rounded-lg p-3">
+          <select className="border border-gray-300 rounded-lg p-3 w-full sm:w-auto">
             <option value="">Tamanho</option>
             <option value="Pequeno">Pequeno</option>
             <option value="Médio">Médio</option>
@@ -66,16 +66,16 @@ export default function PetGallery() {
             placeholder="Nome"
             className="border border-gray-300 rounded-lg p-3 flex-grow"
           />
-          <Button className="bg-[#7DA632] text-white px-6 py-3 rounded-lg">
+          <Button className="bg-[#7DA632] text-white px-6 py-3 rounded-lg w-full sm:w-auto">
             Pesquisar
           </Button>
         </div>
       </div>
 
       <div className="container mx-auto mt-8 px-4">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {loading ? (
-            <p>Carregando...</p>
+            <p className="col-span-full text-center text-gray-700">Carregando...</p>
           ) : (
             pets.map((pet) => (
               <PetCard

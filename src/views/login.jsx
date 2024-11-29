@@ -1,40 +1,42 @@
-import { useState } from "react";
-import { api } from "@/lib/apiWrapper";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../components/ui/button";
-import { useAuth } from "@/hooks/auth/AuthProvider";
+import { useState } from 'react';
+import { api } from '@/lib/apiWrapper';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '../components/ui/button';
+import { useAuth } from '@/hooks/auth/AuthProvider';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const navigate = useNavigate();
   const user = useAuth();
-  
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
-      const response = await api.post("login", {
+      const response = await api.post('login', {
         email,
         senha,
       });
 
       if (response.status === 200) {
-        console.log("Login bem-sucedido", response.data);
-        setMessage("Login realizado com sucesso! Redirecionando...");
-        user.login(response.data)
-        setTimeout(() => { navigate("/") }, 3000);
+        console.log('Login bem-sucedido', response.data);
+        setMessage('Login realizado com sucesso! Redirecionando...');
+        user.login(response.data);
+        setTimeout(() => {
+          navigate('/');
+        }, 3000);
       }
     } catch (err) {
-      setError("Erro ao fazer login. Verifique suas credenciais.");
-      console.error("Erro no login:", err.response?.data || err.message);
+      setError('Erro ao fazer login. Verifique suas credenciais.');
+      console.error('Erro no login:', err.response?.data || err.message);
     } finally {
       setLoading(false);
     }
@@ -42,20 +44,19 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex-grow flex items-center justify-center gap-16">
-        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400" />
-        <div className=" max-w-lg bg-white p-8 rounded-lg border border-primary-400 shadow-lg w-[420px]">
-          <div className="flex flex-col gap-2 mb-6 ">
+      <div className="flex-grow flex items-center justify-center gap-8 sm:gap-12 md:gap-16">
+        {/* Cartões laterais agora são ocultados em telas pequenas */}
+        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400 hidden sm:block" />
+
+        <div className="max-w-lg w-full bg-white p-8 rounded-lg border border-primary-400 shadow-lg">
+          <div className="flex flex-col gap-2 mb-6">
             <h2 className="text-3xl font-bold text-gray-800">Entrar</h2>
             <p>Que bom receber você novamente!</p>
           </div>
 
           <form onSubmit={handleLogin}>
             <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 E-mail
               </label>
               <input
@@ -70,10 +71,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Senha
               </label>
               <input
@@ -87,13 +85,8 @@ export default function LoginPage() {
               />
             </div>
 
-            {error && (
-              <p className="text-red-500 text-sm text-center mb-4">{error}</p>
-            )}
-            
-            {message && (
-              <p className="text-primary-300 text-sm text-center mb-4">{message}</p>
-            )}
+            {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+            {message && <p className="text-primary-300 text-sm text-center mb-4">{message}</p>}
 
             <div className="flex flex-col mb-6 gap-2">
               <Button
@@ -101,10 +94,10 @@ export default function LoginPage() {
                 className="w-full bg-primary-400 text-white font-semibold py-3 px-4 rounded-md shadow-lg hover:bg-primary-300 transition duration-200"
                 disabled={loading}
               >
-                {loading ? "Carregando..." : "Entrar"}
+                {loading ? 'Carregando...' : 'Entrar'}
               </Button>
               <Button className="w-full bg-primary-700 text-gray-800 font-semibold py-3 px-4 rounded-md shadow-lg hover:bg-primary-500 transition duration-200">
-                <Link to={"/registrar"}>Crie uma conta</Link>
+                <Link to={'/registrar'}>Crie uma conta</Link>
               </Button>
             </div>
 
@@ -115,7 +108,8 @@ export default function LoginPage() {
             </div>
           </form>
         </div>
-        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400" />
+
+        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400 hidden sm:block" />
       </div>
     </div>
   );
