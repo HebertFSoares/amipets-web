@@ -1,62 +1,77 @@
-import { useAuth } from "@/hooks/auth/AuthProvider";
-import { Popover, PopoverBackdrop, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { CiMenuBurger } from "react-icons/ci";
-import { Link } from "react-router-dom";
-import { Button } from "./ui/button";
+import { useAuth } from '@/hooks/auth/AuthProvider';
+import { Popover, Transition } from '@headlessui/react';
+import { CiMenuBurger } from 'react-icons/ci';
+import { Link } from 'react-router-dom';
+import { Button } from './ui/button';
 
 export default function BurgerMenu() {
   const categories = [
     {
-      label: "Eu",
+      label: 'Eu',
       links: [
-        {linkTo: "/user/", label: "Minhas adoções"},
-        {linkTo: "/user/", label: "Meus pets favoritos"},
-        {linkTo: "/pets", label: "Buscar pets"},
-        {linkTo: "/user/edit", label: "Editar perfil"}
-      ]
+        { linkTo: '/user/', label: 'Minhas adoções' },
+        { linkTo: '/user/favorites', label: 'Meus pets favoritos' },
+        { linkTo: '/pets', label: 'Buscar pets' },
+        { linkTo: '/user/edit', label: 'Editar perfil' },
+      ],
     },
     {
-      label: "Administração",
+      label: 'Administração',
       links: [
-        {linkTo: "/admin/", label: "Painel de administração"},
-        {linkTo: "/admin/", label: "Painel de pets"},
-        {linkTo: "/admin/", label: "Painel de adoções"},
-        {linkTo: "/admin/", label: "Painel de adotantes"}
-      ]
+        { linkTo: '/admin/', label: 'Painel de administração' },
+        { linkTo: '/admin/pets', label: 'Painel de pets' },
+        { linkTo: '/admin/adocoes', label: 'Painel de adoções' },
+        { linkTo: '/admin/adotantes', label: 'Painel de adotantes' },
+      ],
     },
     {
-      links: [
-        {linkTo: "#", label: "Logout"}
-      ]
-    }
-  ]
+      links: [{ linkTo: '#', label: 'Logout' }],
+    },
+  ];
   const user = useAuth();
 
   return (
-    <Popover className="relative group">
-      <PopoverButton>
-        <Button className="bg-primary-400">
-          <CiMenuBurger className="transition duration-200 ease-in group-data-[open]:rotate-90" transition/>
-        </Button>
-      </PopoverButton>
-      <PopoverBackdrop className="fixed inset-0 bg-black/25 transition duration-100 data-[closed]:opacity-0" transition/>
-      <PopoverPanel anchor="bottom" className="flex flex-col space-y-2 bg-white p-4 rounded-lg shadow-lg transition duration-200 ease-out data-[closed]:-translate-y-4 data-[closed]:opacity-0" transition>
-        {categories.map((category, index) => (
-          <div key={index} className="bg-primary-400 rounded-md p-4 flex flex-col text-right">
-            <div className="flex flex-row align-middle space-x-2">
-              <div className="flex-auto bg-black h-0.5 self-center"></div>
-              {category.label && 
-                <p className="font-bold">{category.label}</p>
-              }
-            </div>
-              {category.links.map((link, index) => (
-                <Link key={index} to={link.linkTo} className="text-text-900 underline hover:text-text-500" onClick={link.label === "Logout" ? user.logout : null }>{link.label}</Link>
+    <Popover className="relative">
+      {({ open }) => (
+        <>
+          <Popover.Button as={Button} className="bg-primary-400 focus:outline-none">
+            <CiMenuBurger
+              className={`transition-transform duration-200 ${open ? 'rotate-90' : 'rotate-0'}`}
+            />
+          </Popover.Button>
+
+          <Transition
+            enter="transition duration-300 ease-out"
+            enterFrom="opacity-0 translate-y-2"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition duration-200 ease-in"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-2"
+          >
+            <Popover.Panel className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-20 p-4 flex flex-col space-y-4">
+              {categories.map((category, index) => (
+                <div key={index} className="bg-primary-400 rounded-md p-4 flex flex-col text-right">
+                  {category.label && <p className="font-bold mb-2">{category.label}</p>}
+                  {category.links.map((link, index) => (
+                    <Link
+                      key={index}
+                      to={link.linkTo}
+                      onClick={link.label === 'Logout' ? user.logout : undefined}
+                      className="text-text-900 underline hover:text-text-500"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
               ))}
-          </div>
-        ))}
-      </PopoverPanel>
+            </Popover.Panel>
+          </Transition>
+
+          <Popover.Overlay className="fixed inset-0 bg-black/25" />
+        </>
+      )}
     </Popover>
-  )
+  );
 }
 
 function Category({ children }) {
@@ -64,5 +79,5 @@ function Category({ children }) {
     <div className="bg-primary-400 rounded-md p-4 flex flex-col text-right text-text-900 underline">
       {children}
     </div>
-  )
+  );
 }
