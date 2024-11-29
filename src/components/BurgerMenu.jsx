@@ -36,7 +36,9 @@ export default function BurgerMenu() {
         <>
           <Popover.Button as={Button} className="bg-primary-400 focus:outline-none">
             <CiMenuBurger
-              className={`transition-transform duration-200 ${open ? 'rotate-90' : 'rotate-0'}`}
+              className={`transition-transform duration-200 ${
+                open ? "rotate-90" : "rotate-0"
+              }`}
             />
           </Popover.Button>
 

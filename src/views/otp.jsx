@@ -46,14 +46,14 @@ export default function OTPPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAF7F2]">
+      <div className="flex flex-col min-h-screen bg-[#FAF7F2]">
       <section className="flex-grow flex items-center justify-center py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md sm:max-w-lg bg-white p-6 sm:p-8 rounded-2xl shadow-xl border-4 border-[#7DA632]">
+        <div className="w-full max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-6 sm:p-8 rounded-2xl shadow-xl border-4 border-[#7DA632]">
           <h3 className="text-xl sm:text-2xl font-semibold text-center text-[#4A4A4A] mb-4 sm:mb-6">
             Digite o Código OTP
           </h3>
 
-          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 lg:space-y-10">
             <div className="flex">
               <input
                 type="email"
@@ -64,7 +64,7 @@ export default function OTPPage() {
                 required
               />
             </div>
-            <div className="grid grid-cols-6 gap-3 sm:gap-4">
+            <div className="grid grid-cols-6 gap-6 sm:gap-8">
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="relative">
                   <input
@@ -78,7 +78,7 @@ export default function OTPPage() {
                       setOtp(newOtp.join(''));
                     }}
                     onPaste={handlePaste}
-                    className="w-10 h-10 sm:w-14 sm:h-14 text-center text-xl sm:text-2xl border-2 border-[#B7B7B7] rounded-lg focus:ring-[#7DA632] focus:border-[#7DA632] bg-[#F1F1F1] shadow-sm transition duration-300 ease-in-out"
+                    className="w-12 h-12 sm:w-16 sm:h-16 text-center text-xl sm:text-2xl border-2 border-[#B7B7B7] rounded-lg focus:ring-[#7DA632] focus:border-[#7DA632] bg-[#F1F1F1] shadow-sm transition duration-300 ease-in-out"
                     placeholder="-"
                     required
                   />
@@ -105,9 +105,9 @@ export default function OTPPage() {
                 Não recebeu o código? Enviar novamente
               </a>
             </div>
-          </form>
-        </div>
-      </section>
-    </div>
+        </form>
+      </div>
+    </section>
+  </div>
   );
 }

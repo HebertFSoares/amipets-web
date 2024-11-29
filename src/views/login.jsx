@@ -51,15 +51,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-grow flex items-center justify-center gap-16">
-        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400" />
-        <div className="max-w-lg bg-white p-8 rounded-lg border border-primary-400 shadow-lg w-[420px]">
-          <div className="flex flex-col gap-2 mb-6 ">
+      <div className="flex flex-col min-h-screen">
+      <div className="flex-grow flex items-center justify-center gap-8 sm:gap-12 md:gap-16">
+        {/* Cartões laterais agora são ocultados em telas pequenas */}
+        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400 hidden sm:block" />
+    
+        <div className="max-w-lg w-full bg-white p-8 rounded-lg border border-primary-400 shadow-lg">
+          <div className="flex flex-col gap-2 mb-6">
             <h2 className="text-3xl font-bold text-gray-800">Entrar</h2>
             <p>Que bom receber você novamente!</p>
           </div>
-
+    
           <form onSubmit={handleLogin}>
             <div className="mb-6">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -75,7 +77,7 @@ export default function LoginPage() {
                 required
               />
             </div>
-
+    
             <div className="mb-6">
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Senha
@@ -90,15 +92,10 @@ export default function LoginPage() {
                 required
               />
             </div>
-
-            {error && (
-              <p className="text-red-500 text-sm text-center mb-4">{error}</p>
-            )}
-            
-            {message && (
-              <p className="text-primary-300 text-sm text-center mb-4">{message}</p>
-            )}
-
+    
+            {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+            {message && <p className="text-primary-300 text-sm text-center mb-4">{message}</p>}
+    
             <div className="flex flex-col mb-6 gap-2">
               <Button
                 type="submit"
@@ -111,7 +108,7 @@ export default function LoginPage() {
                 <Link to={"/registrar"}>Crie uma conta</Link>
               </Button>
             </div>
-
+    
             <div className="flex justify-between items-center mb-6">
               <a href="#" className="text-sm text-[#7DA632] hover:underline">
                 Esqueci minha senha
@@ -119,7 +116,8 @@ export default function LoginPage() {
             </div>
           </form>
         </div>
-        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400" />
+    
+        <div className="w-[244px] h-[450px] rounded-lg bg-primary-400 hidden sm:block" />
       </div>
     </div>
   );

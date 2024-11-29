@@ -128,14 +128,11 @@ export default function ModalAdocao({ isOpen, closeModal, pet, status, adocaoId 
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-              <div className="mb-6">
-                <div className="flex items-center justify-between">
+              <Dialog.Panel className="w-full max-w-lg sm:max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <div className="flex flex-col items-center justify-between sm:flex-row sm:space-x-4">
                   {statusSteps.map((step) => (
                     <div key={step.id} className="flex flex-col items-center">
-                      <div
-                        className={`flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold ${step.active ? 'bg-[#7DA632] text-white' : 'bg-gray-300 text-gray-500'}`}
-                      >
+                      <div className={`flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold ${step.active ? 'bg-[#7DA632] text-white' : 'bg-gray-300 text-gray-500'}`}>
                         {step.id}
                       </div>
                       <div className={`mt-2 text-sm ${step.active ? 'text-[#7DA632]' : 'text-gray-400'}`}>
@@ -144,11 +141,11 @@ export default function ModalAdocao({ isOpen, closeModal, pet, status, adocaoId 
                     </div>
                   ))}
                 </div>
-              </div>
 
-                <Dialog.Title as="h3" className="text-lg font-bold leading-6 text-gray-900">
+                <Dialog.Title as="h3" className="text-lg md:text-xl font-bold leading-6 text-gray-900">
                   Adote {pet?.nome || 'um Pet'}
                 </Dialog.Title>
+
                 <div className="mt-4 space-y-2">
                   <p className="text-sm text-gray-500">
                     <strong>Espécie:</strong> {pet?.especie || 'Não informado'}
@@ -163,6 +160,7 @@ export default function ModalAdocao({ isOpen, closeModal, pet, status, adocaoId 
                     <strong>Descrição:</strong> {pet?.descricao || 'Sem descrição'}
                   </p>
                 </div>
+
                 <div className="mt-4 bg-[#F5F8E6] p-4 rounded-lg">
                   <p className="text-sm" style={{ color: '#7DA632' }}>
                     Verifique o status acima. Qualquer dúvida, entre em contato com o suporte.
@@ -178,22 +176,24 @@ export default function ModalAdocao({ isOpen, closeModal, pet, status, adocaoId 
                   >
                     Cancelar
                   </button>
+
                   {!isRequestSent &&
-                  adocaoStatus !== 'SOLICITACAO_ENVIADA' &&
-                  adocaoStatus !== 'EM_ANALISE' &&
-                  adocaoStatus !== 'APROVADO' && (
-                    <button
-                      type="button"
-                      className="px-4 py-2 text-sm font-medium text-white"
-                      style={{ backgroundColor: '#7DA632' }}
-                      onClick={handleRequestSubmit}
-                      disabled={loading}
-                    >
-                      {loading ? 'Enviando...' : 'Enviar Solicitação'}
-                    </button>
-                  )}
-              </div>
-              </Dialog.Panel> 
+                    adocaoStatus !== 'SOLICITACAO_ENVIADA' &&
+                    adocaoStatus !== 'EM_ANALISE' &&
+                    adocaoStatus !== 'APROVADO' && (
+                      <button
+                        type="button"
+                        className="px-4 py-2 text-sm font-medium text-white"
+                        style={{ backgroundColor: '#7DA632' }}
+                        onClick={handleRequestSubmit}
+                        disabled={loading}
+                      >
+                        {loading ? 'Enviando...' : 'Enviar Solicitação'}
+                      </button>
+                    )}
+                </div>
+              </Dialog.Panel>
+
             </Transition.Child>
           </div>
         </div>
