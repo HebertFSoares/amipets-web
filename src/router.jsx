@@ -9,6 +9,7 @@ import LoginPage from "./views/login";
 import SignUpPage from "./views/signUp";
 import OTPPage from "./views/otp";
 import PetDetail from "./views/pet";
+import { PetsViewAdmin } from "./components/PetsViewAdmin/PetsViewAdmin";
 import UserEditarPage from "./views/user/editar";
 
 const PrivateRoute = () => {
@@ -26,19 +27,22 @@ const GuestOnlyRoute = () => {
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<MainLayout />}>
-            <Route path="/" element={<HomeView />}/>
-            <Route path="/pets" element={<PetsView />}/>
+            <Route path="/admin/pets/" element={<PetsViewAdmin />} />
+            <Route path="/" element={<HomeView />} />
+            <Route path="/pets" element={<PetsView />} />
             <Route path="/pets/:id" element={<PetDetail />} />
-            
-            <Route element={<GuestOnlyRoute/>}>
+
+            <Route element={<GuestOnlyRoute />}>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/registrar" element={<SignUpPage />} />
                 <Route path="/otp" element={<OTPPage />} />
             </Route>
 
-            <Route element={<PrivateRoute/>}>
+            <Route element={<PrivateRoute />}>
                 <Route path="user/edit" element={<UserEditarPage />} />
             </Route>
+
+            <Route path="/admin/pets/" element={<PetsViewAdmin />} />
         </Route>
     )
 )

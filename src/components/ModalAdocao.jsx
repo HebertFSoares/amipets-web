@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { jwtDecode } from "jwt-decode";
 import { api } from '@/lib/apiWrapper';
-import axios from 'axios';
 
 export default function ModalAdocao({ isOpen, closeModal, pet, status, adocaoId }) {
   const [isRequestSent, setIsRequestSent] = useState(false);
