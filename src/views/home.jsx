@@ -121,13 +121,16 @@ export default function HomePage() {
             </div>
           )}
 
-          {!loading && !error && pets.length > limit && (
-            <div className="flex justify-center mt-6">
-              <Button className="bg-white text-primary-400 px-4 py-2 rounded-lg shadow border border-primary-400 text-sm hover:bg-gray-100">
-                Veja mais
-              </Button>
-            </div>
-          )}
+        {!loading && !error && pets.length > limit && (
+          <div className="flex justify-center mt-6">
+            <Button
+              className="bg-white text-primary-400 px-4 py-2 rounded-lg shadow border border-primary-400 text-sm hover:bg-gray-100"
+              onClick={loadMorePets} // Adiciona o evento onClick
+            >
+              Veja mais
+            </Button>
+          </div>
+        )}
         </div>
       </section>
 

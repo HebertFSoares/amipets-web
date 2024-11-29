@@ -53,7 +53,6 @@ export default function LoginPage() {
   return (
       <div className="flex flex-col min-h-screen">
       <div className="flex-grow flex items-center justify-center gap-8 sm:gap-12 md:gap-16">
-        {/* Cartões laterais agora são ocultados em telas pequenas */}
         <div className="w-[244px] h-[450px] rounded-lg bg-primary-400 hidden sm:block" />
     
         <div className="max-w-lg w-full bg-white p-8 rounded-lg border border-primary-400 shadow-lg">
