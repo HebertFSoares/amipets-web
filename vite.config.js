@@ -12,7 +12,6 @@ export default ({ mode }) => {
         "@": path.resolve(__dirname, "./src")
       },
     },
-    base: "/amipets-web/",
     server: {
       port: parseInt(process.env.SERVER_PORT)
     }
