@@ -29,7 +29,9 @@ const GuestOnlyRoute = () => {
 const AdminRoute = () => {
     const { user, loading } = useAuth();
     if (loading) return "";
-    if (!user || !user.isAdmin) return <Navigate to="/" />;
+    if (!user || !user.isAdmin) {
+        return <Navigate to="/login" state={{ message: "Você precisa ser um administrador para acessar esta página." }} />;
+    }
     return <Outlet />;
 }
 
