@@ -5,12 +5,14 @@ import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode"; 
 import { MdAdminPanelSettings } from "react-icons/md";
 import { Popover, Transition } from "@headlessui/react";
-import BurgerMenu from "./BurgerMenu";
+import { useMediaQuery } from "react-responsive";  // Para verificar o tamanho da tela
+import BurgerMenu from "./BurgerMenu"; // Importando o BurgerMenu
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useAuth();
   const location = useLocation();
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" }); // Verificando se está em modo mobile
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -41,9 +43,13 @@ export default function Header() {
         <Link to="/">
           <img src="https://i.imgur.com/VBOOjTq.png" alt="Logo" className="w-28 sm:w-36" />
         </Link>
-        <BurgerMenu />
+
+        {/* Exibe o BurgerMenu apenas em telas pequenas (mobile) */}
+        {isMobile && <BurgerMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />}
       </div>
-      <nav className={`${isMenuOpen ? "block" : "hidden"} w-full md:w-auto md:flex items-center mt-4 md:mt-0`}>
+
+      {/* Menu de navegação */}
+      <nav className={`${isMenuOpen || !isMobile ? "block" : "hidden"} w-full md:w-auto md:flex items-center mt-4 md:mt-0`}>
         <div className="flex flex-col md:flex-row md:items-center w-full md:w-auto space-y-4 md:space-y-0 md:space-x-4">
           <Button className="bg-primary-400 w-full md:w-auto" onClick={handleLinkClick}>
             <Link to="/">Início</Link>
@@ -52,6 +58,7 @@ export default function Header() {
             <Link to="/pets">Pets</Link>
           </Button>
 
+          {/* Exibindo botões de login e registro caso o usuário não esteja autenticado */}
           {!user.token ? (
             <>
               <Button className="bg-primary-400 w-full md:w-auto" onClick={handleLinkClick}>
@@ -63,6 +70,7 @@ export default function Header() {
             </>
           ) : (
             <>
+              {/* Botão de logout e opções de administração para usuários autenticados */}
               <Button className="bg-primary-400 w-full md:w-auto" onClick={handleLinkClick}>
                 <Link to="#" onClick={user.logout}>
                   Logout
