@@ -26,9 +26,7 @@ export default function OTPPage() {
       if (response.status === 201) {
         console.log('OTP verificado com sucesso', response.data);
         setMessage('Sua conta foi verificada com sucesso! Faça login para continuar.');
-        setTimeout(() => {
-          navigate('/login');
-        }, 5000);
+        navigate("/login");
       }
     } catch (err) {
       setError('Código OTP inválido. Tente novamente.');

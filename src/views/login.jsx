@@ -36,7 +36,7 @@ export default function LoginPage() {
         console.log("Login bem-sucedido", response.data);
         setMessage("Login realizado com sucesso! Redirecionando...");
         user.login(response.data);
-        setTimeout(() => { navigate("/") }, 3000);
+        navigate("/")
       }
     } catch (err) {
       if (err.response?.status === 401) {

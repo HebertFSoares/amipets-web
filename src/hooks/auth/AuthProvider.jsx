@@ -1,4 +1,3 @@
-import { api } from "@/lib/apiWrapper";
 import { jwtDecode } from "jwt-decode";
 import { useContext, createContext, useState, useEffect } from "react";
 const AuthContext = createContext();
@@ -7,7 +6,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [userName, setUserName] = useState(localStorage.getItem("userName") || "");
   const [token, setToken] = useState(localStorage.getItem("authToken") || "");
-
+  const [loading, setLoading] = useState(true)
+  
   const login = (data) => {
     setToken(data.token);
     setUserName(data.user.email);
@@ -23,15 +23,21 @@ export const AuthProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    if(token){
-      const decodedToken = jwtDecode(token);
-      setUser(decodedToken)
-      console.log(decodedToken)
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUser(decodedToken);
+        // console.log("Validando token...")
+      } catch (err) {
+        console.error("Token inválido: ", err);
+        logout();
+      }
     }
-  }, [token])
+    setLoading(false);
+  }, [token]);
   
   return (
-    <AuthContext.Provider value={{ user, userName, token, login, logout}}>
+    <AuthContext.Provider value={{ user, userName, token, loading, login, logout}}>
       {children}
     </AuthContext.Provider>
   )

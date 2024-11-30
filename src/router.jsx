@@ -13,21 +13,29 @@ import { PetsViewAdmin } from "./components/PetsViewAdmin/PetsViewAdmin";
 import UserEditarPage from "./views/user/editar";
 
 const PrivateRoute = () => {
-    const user = useAuth();
-    if (!user.token) return <Navigate to="/login" />;
+    const { token, loading } = useAuth();
+    if (loading) return "";
+    if (!token) return <Navigate to="/login" />;
     return <Outlet />
 }
 
 const GuestOnlyRoute = () => {
-    const user = useAuth();
-    if (user.token) return <Navigate to="/" />;
+    const { token, loading } = useAuth();
+    if (loading) return "";
+    if (token) return <Navigate to="/" />;
     return <Outlet />
+}
+
+const AdminRoute = () => {
+    const { user, loading } = useAuth();
+    if (loading) return "";
+    if (!user || !user.isAdmin) return <Navigate to="/" />;
+    return <Outlet />;
 }
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route path="/" element={<MainLayout />}>
-            <Route path="/admin/pets/" element={<PetsViewAdmin />} />
+        <Route element={<MainLayout />}>
             <Route path="/" element={<HomeView />} />
             <Route path="/pets" element={<PetsView />} />
             <Route path="/pets/:id" element={<PetDetail />} />
@@ -42,7 +50,9 @@ export const router = createBrowserRouter(
                 <Route path="user/edit" element={<UserEditarPage />} />
             </Route>
 
-            <Route path="/admin/pets/" element={<PetsViewAdmin />} />
+            <Route element={<AdminRoute />}>
+                <Route path="/admin/pets/" element={<PetsViewAdmin />} />
+            </Route>
         </Route>
     )
 )
