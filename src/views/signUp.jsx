@@ -31,8 +31,13 @@ export default function SignUpPage() {
       });
 
       if (response.status === 201) {
-        console.log("Cadastro bem-sucedido", response.data);
-        setMessage("Seu cadastro foi recebido! Verifique seu email para validar sua conta.")
+        localStorage.setItem("userEmail", email);
+
+        setMessage("Seu cadastro foi recebido! Verifique seu email para validar sua conta.");
+
+        setTimeout(() => {
+          navigate("/OTP");
+        }, 3000);
       }
     } catch (err) {
       setError("Erro ao realizar cadastro. Verifique os dados.");

@@ -125,7 +125,7 @@ export default function HomePage() {
           <div className="flex justify-center mt-6">
             <Button
               className="bg-white text-primary-400 px-4 py-2 rounded-lg shadow border border-primary-400 text-sm hover:bg-gray-100"
-              onClick={loadMorePets} // Adiciona o evento onClick
+              onClick={loadMorePets}
             >
               Veja mais
             </Button>

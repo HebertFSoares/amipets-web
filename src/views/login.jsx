@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "@/lib/apiWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
@@ -13,7 +13,14 @@ export default function LoginPage() {
 
   const navigate = useNavigate();
   const user = useAuth();
-  
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("userEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+  }, []);
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -51,7 +58,7 @@ export default function LoginPage() {
   };
 
   return (
-      <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <div className="flex-grow flex items-center justify-center gap-8 sm:gap-12 md:gap-16">
         <div className="w-[244px] h-[450px] rounded-lg bg-primary-400 hidden sm:block" />
     

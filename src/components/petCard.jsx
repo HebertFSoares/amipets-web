@@ -37,12 +37,6 @@ export default function PetCard({
         </CardContent>
         <CardFooter className="flex flex-col space-y-3">
           <div className="flex gap-3 w-full flex-wrap justify-center sm:justify-start">
-            <Button
-              className="bg-primary-400 text-white hover:bg-primary-300 w-full sm:w-auto"
-              onClick={() => onAdopt(id)}
-            >
-              Adotar
-            </Button>
           </div>
 
           <Link
