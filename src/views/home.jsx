@@ -87,7 +87,7 @@ export default function HomePage() {
             </Button>
           </div>
           <img
-            src="src/assets/images/pit.jpg"
+            src="https://i.imgur.com/WlIw7Pj.jpeg"
             alt="Imagem de um cão"
             className="w-full md:w-1/2 lg:w-1/3 rounded-lg object-cover"
           />
@@ -142,7 +142,7 @@ export default function HomePage() {
           {/* Cards de vantagens */}
           <div className="bg-white rounded-lg border border-primary-400 shadow p-6 flex flex-col md:flex-row items-center gap-4">
             <img
-              src="src/assets/images/mulher_cachorro.png"
+              src="https://i.imgur.com/8qoFrc3.png"
               alt="Mulher segurando cachorro"
               className="w-24 h-24 md:w-32 md:h-32 object-cover"
             />
@@ -157,7 +157,7 @@ export default function HomePage() {
 
           <div className="bg-white rounded-lg border border-primary-400 shadow p-6 flex flex-col md:flex-row items-center gap-4">
             <img
-              src="src/assets/images/homem_gato.png"
+              src="https://i.imgur.com/oGCyFfM.png"
               alt="Homem segurando gato"
               className="w-24 h-24 md:w-32 md:h-32 object-cover"
             />
@@ -172,7 +172,7 @@ export default function HomePage() {
 
           <div className="bg-white rounded-lg border border-primary-400 shadow p-6 flex flex-col md:flex-row items-center gap-4">
             <img
-              src="src/assets/images/mulher_coracao.png"
+              src="https://i.imgur.com/edHGG9Y.png"
               alt="Mulher com coração"
               className="w-24 h-24 md:w-32 md:h-32 object-cover"
             />
