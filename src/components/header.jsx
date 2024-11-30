@@ -2,9 +2,10 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useAuth } from "@/hooks/auth/AuthProvider";
 import { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode"; // Importação para decodificar o token JWT
+import { jwtDecode } from "jwt-decode"; 
 import { MdAdminPanelSettings } from "react-icons/md";
 import { Popover, Transition } from "@headlessui/react";
+import BurgerMenu from "./BurgerMenu";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,20 +41,9 @@ export default function Header() {
         <Link to="/">
           <img src="https://i.imgur.com/VBOOjTq.png" alt="Logo" className="w-28 sm:w-36" />
         </Link>
-        <button
-          className="text-white md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle Menu"
-        >
-          <span className="block">☰</span>
-        </button>
+        <BurgerMenu />
       </div>
-
-      <nav
-        className={`${
-          isMenuOpen ? "block" : "hidden"
-        } w-full md:w-auto md:flex items-center mt-4 md:mt-0`}
-      >
+      <nav className={`${isMenuOpen ? "block" : "hidden"} w-full md:w-auto md:flex items-center mt-4 md:mt-0`}>
         <div className="flex flex-col md:flex-row md:items-center w-full md:w-auto space-y-4 md:space-y-0 md:space-x-4">
           <Button className="bg-primary-400 w-full md:w-auto" onClick={handleLinkClick}>
             <Link to="/">Início</Link>
@@ -84,7 +74,7 @@ export default function Header() {
                   {({ open }) => (
                     <>
                       <Popover.Button className="bg-primary-400 w-full md:w-auto flex items-center space-x-2">
-                      <Button className="bg-primary-400 w-full md:w-auto">Administração</Button>
+                        <Button className="bg-primary-400 w-full md:w-auto">Administração</Button>
                       </Popover.Button>
                       <Transition
                         enter="transition duration-300 ease-out"
