@@ -25,3 +25,5 @@ package-lock.json
 *.sln
 *.sw?
 .vercel
+
+.vercel
