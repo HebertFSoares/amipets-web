@@ -7,7 +7,7 @@ export default function PetCard({
   id,
   nome,
   especie,
-  dataNasc,
+  dataNascimento,
   tamanho,
   personalidade,
   imagem,
@@ -25,7 +25,7 @@ export default function PetCard({
             <span>🐾</span> Espécie: {especie}
           </p>
           <p className="text-sm flex items-center justify-start gap-1">
-            <span>🐾</span> Data Nasc: {dataNasc}
+            <span>🐾</span> Data Nasc: {dataNascimento}
           </p>
           <p className="text-sm flex items-center justify-start gap-1">
             <span>🐾</span> Tamanho: {tamanho}

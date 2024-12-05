@@ -83,9 +83,6 @@ export default function PetDetail() {
                   <strong>Personalidade:</strong> {formatPersonalidade(pet.personalidade)}
                 </p>
                 <p className="text-base sm:text-lg text-gray-700">
-                  <strong>Descrição:</strong> {pet.descricao}
-                </p>
-                <p className="text-base sm:text-lg text-gray-700">
                   <strong>Status:</strong> {formatStatus(pet.status)}
                 </p>
                 <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
