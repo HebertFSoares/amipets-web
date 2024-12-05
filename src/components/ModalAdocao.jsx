@@ -153,10 +153,7 @@ export default function ModalAdocao({ isOpen, closeModal, pet, status, adocaoId 
                     <strong>Tamanho:</strong> {pet?.tamanho || 'Não informado'}
                   </p>
                   <p className="text-sm text-gray-500">
-                    <strong>Idade:</strong> {pet?.idade || 'Não informado'}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    <strong>Descrição:</strong> {pet?.descricao || 'Sem descrição'}
+                    <strong>Idade:</strong> {pet?.idade || '1 ano'}
                   </p>
                 </div>
 
